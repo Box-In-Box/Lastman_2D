@@ -6,7 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.EventSystems;
 
-public class NetworkManager : MonoBehaviourPunCallbacks
+public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [Header("-----LoginPanel-----")]
     public InputField nickNameInput;
@@ -29,13 +29,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public InputField chatInput;
 
     [Header("-----ETC-----")]
-    public Text serverStatusText;
+    public bool inGame = false;
     private PhotonView PV;
 
     List<RoomInfo> myRoomList = new List<RoomInfo>();
     int currentRoomPage = 1, maxRoomPage, multiple;
-
-    void Awake() => Screen.SetResolution(1920, 1080, false);
 
     void Start()
     {
@@ -46,14 +44,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        serverStatusText.text = PhotonNetwork.NetworkClientState.ToString();
-        lobbyInfoText.text = (PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms) + "로비 / " + PhotonNetwork.CountOfPlayers + "접속";
+        if (!inGame) {
+            lobbyInfoText.text = (PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms) + "로비 / " + PhotonNetwork.CountOfPlayers + "접속";
 
-        if(roomPanel.activeSelf == true) {
-                if (chatInput.text != "" && Input.GetKeyDown(KeyCode.Return)) {
-                    MsgSend();
-                    chatInput.ActivateInputField();
-                    chatInput.Select();
+            if(roomPanel.activeSelf == true) {
+                    if (chatInput.text != "" && Input.GetKeyDown(KeyCode.Return)) {
+                        MsgSend();
+                        chatInput.ActivateInputField();
+                        chatInput.Select();
+                }
             }
         }
     }
@@ -130,7 +129,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     #region Room
     public void CreateRoom()
     {
-        PhotonNetwork.CreateRoom(RoomNameInput.text == "" ? "Room" + Random.Range(0, 100) : RoomNameInput.text, new RoomOptions { MaxPlayers = 2});
+        PhotonNetwork.CreateRoom(RoomNameInput.text == "" ? "Room" + Random.Range(0, 100) : RoomNameInput.text, new RoomOptions { MaxPlayers = 4});
         RoomNameInput.text = "";
     }
 
@@ -191,4 +190,5 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         chatTextGo.GetComponent<Text>().text = msg;
     }
     #endregion
+
 }
