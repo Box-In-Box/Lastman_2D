@@ -10,6 +10,7 @@ public class Singleton : MonoBehaviourPun
 {
     public const byte INIT = 0, REMOVE = 1, DIEWALL = 2, DIE = 3;
     public static readonly Quaternion QI = Quaternion.identity;
+    public bool isStart;
 
     public static Singleton singleton;
     
@@ -21,7 +22,7 @@ public class Singleton : MonoBehaviourPun
 			singleton = this;
 			DontDestroyOnLoad(this);
 		}
-		else Destroy(this);
+		else Destroy(gameObject);
 	}
     #endregion
 
@@ -80,18 +81,16 @@ public class Singleton : MonoBehaviourPun
     public void GameStartBtn()
     {
         if (Master()) {
-            PhotonNetwork.LoadLevel("Game");
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.CurrentRoom.IsVisible = false;
+            PhotonNetwork.LoadLevel("Game");
         }
     }
 
     public void GameEnd()
     {
         if (Master()) {
-            PhotonNetwork.LoadLevel("Lobby");
             PhotonNetwork.CurrentRoom.IsOpen = true;
-            PhotonNetwork.CurrentRoom.IsVisible = true;
+            PhotonNetwork.LoadLevel("Lobby");
         }
     }
 

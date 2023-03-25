@@ -5,10 +5,14 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.EventSystems;
+using static Singleton;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
+    public const byte LOGIN = 0, LOBBY = 1, ROOM = 2;
+
     [Header("-----LoginPanel-----")]
+    public GameObject logInPanel;
     public InputField nickNameInput;
 
     [Header("-----LobbyPanel-----")]
@@ -23,23 +27,61 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [Header("-----RoomPanel-----")]
     public GameObject roomPanel;
     public Text roomInfoText;
-    public Text playerListText;
+    public GameObject[] playerSlot;
+    public List<PlayerManager> players = new List<PlayerManager>();
+    public PlayerManager myPlayer;
     public Transform chatContent;
     public GameObject chatText;
     public InputField chatInput;
+    public Button gameStartBtn;
 
     [Header("-----ETC-----")]
     public bool inGame = false;
-    private PhotonView PV;
+    public PhotonView PV;
 
     List<RoomInfo> myRoomList = new List<RoomInfo>();
     int currentRoomPage = 1, maxRoomPage, multiple;
 
     void Start()
     {
-        PV = GetComponent<PhotonView>();
-        lobbyPanel.SetActive(false);
-        roomPanel.SetActive(false);
+        Setting();
+        
+        if (PhotonNetwork.IsConnected) //게임 씬에서 돌아왔을 때
+            RoomIn();
+    }
+
+    void SetPanel(byte value)   //한 개 패널만 활성화
+    {
+        switch (value) {
+            case LOGIN :
+                logInPanel.SetActive(true);
+                lobbyPanel.SetActive(false);
+                roomPanel.SetActive(false);
+                break;
+            case LOBBY :
+                logInPanel.SetActive(false);
+                lobbyPanel.SetActive(true);
+                roomPanel.SetActive(false);
+                break;
+            case ROOM :
+                logInPanel.SetActive(false);
+                lobbyPanel.SetActive(false);
+                roomPanel.SetActive(true);
+                break;
+        }
+    }
+
+    void Setting()
+    {
+        SetPanel(LOGIN);
+        gameStartBtn.onClick.AddListener(()=> singleton.GameStartBtn());
+    }
+
+    void RoomIn()
+    {
+        SetPanel(ROOM);
+        myPlayer = PhotonNetwork.Instantiate("Player", new Vector2(0, 0), QI).GetComponent<PlayerManager>();
+        RoomRenewal();
     }
 
     void Update()
@@ -58,20 +100,28 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     #region Server Setting
-    public void Connect() => PhotonNetwork.ConnectUsingSettings();
+    public void Connect()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.LocalPlayer.NickName = nickNameInput.text;
+    }
 
     public override void OnConnectedToMaster() => PhotonNetwork.JoinLobby();
 
     public override void OnJoinedLobby()
     {
-        lobbyPanel.SetActive(true);
-        roomPanel.SetActive(false);
-        PhotonNetwork.LocalPlayer.NickName = nickNameInput.text;
+        SetPanel(LOBBY);
+        
+        nickNameInput.text = "";
         wellcomText.text = PhotonNetwork.LocalPlayer.NickName + "님 환영합니다.";
         myRoomList.Clear();
     }
 
-    public void Disconnect() => PhotonNetwork.Disconnect();
+    public void Disconnect()
+    {
+        SetPanel(LOGIN);
+        PhotonNetwork.Disconnect();
+    } 
 
     public override void OnDisconnected(DisconnectCause cause)
     {
@@ -131,6 +181,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.CreateRoom(RoomNameInput.text == "" ? "Room" + Random.Range(0, 100) : RoomNameInput.text, new RoomOptions { MaxPlayers = 4});
         RoomNameInput.text = "";
+        playerSlot[0].transform.GetChild(0).GetComponent<Text>().text = PhotonNetwork.NickName;
     }
 
     public void JoinRoom()
@@ -139,10 +190,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(roomName);
     }
 
+    public void SortPlayers() => players.Sort((p1, p2) => p1.actor.CompareTo(p2.actor));
+
     public override void OnJoinedRoom()
     {
-        roomPanel.SetActive(true);
-        RoomRenewal();
+        RoomIn();
         chatInput.text = "";
     }
 
@@ -151,26 +203,76 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void JoinRandomRoom() => PhotonNetwork.JoinRandomRoom();
     public override void OnJoinRandomFailed(short returnCode, string message) { RoomNameInput.text = ""; CreateRoom(); }
 
-    public void LeaveRoom() => PhotonNetwork.LeaveRoom();
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+        RemoveRoomLog();
+    }
 
+    void RemoveRoomLog()
+    {
+        //챗 로그 삭제
+        var child = chatContent.GetComponentsInChildren<Transform>();
+        if (child != null) {
+            for (int i = 1; i < child.Length; i++) {
+                if (child[i] != transform)
+                    Destroy(child[i].gameObject);
+            }
+        }
+
+        //플레이어 닉네임 삭제
+        for(int i = 0; i < playerSlot.Length; i++) {
+            playerSlot[i].transform.GetChild(0).GetComponent<Text>().text = "";
+        }
+    } 
+    
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         RoomRenewal();
-        PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + newPlayer.NickName + "님이 참가하셨습니다</color>");
+        if (singleton.Master())
+            PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + newPlayer.NickName + "님이 참가하셨습니다</color>");
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         RoomRenewal();
-        PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + otherPlayer.NickName + "님이 퇴장하셨습니다</color>");
+        if (singleton.Master())
+            PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + otherPlayer.NickName + "님이 퇴장하셨습니다</color>");
     }
 
-    void RoomRenewal()
+    public void RoomRenewal()
     {
-        playerListText.text = "";
-        for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-            playerListText.text += PhotonNetwork.PlayerList[i].NickName + ((i + 1 == PhotonNetwork.PlayerList.Length) ? "" : ", ");
-            roomInfoText.text = PhotonNetwork.CurrentRoom.Name + " / " + PhotonNetwork.CurrentRoom.PlayerCount + "명 / " + PhotonNetwork.CurrentRoom.MaxPlayers + "최대";
+        roomInfoText.text = PhotonNetwork.CurrentRoom.Name + " / " + "현재" + PhotonNetwork.CurrentRoom.PlayerCount + "명 / " + "최대" +PhotonNetwork.CurrentRoom.MaxPlayers + "명";
+
+        //플레이어 리셋
+        for(int i = 0; i < playerSlot.Length; i++) {
+            playerSlot[i].transform.GetChild(0).GetComponent<Text>().text = "";
+        }
+
+        //플레이어 추가
+        for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++) {
+            playerSlot[i].transform.GetChild(0).GetComponent<Text>().text = PhotonNetwork.PlayerList[i].NickName;
+        }
+
+        for (int i = 0; i < players.Count; i++) {
+            players[i].gameObject.transform.SetParent(playerSlot[i].transform);
+            players[i].gameObject.transform.localPosition = new Vector3(0, 0, 0);
+        }
+    }
+
+    public void SetPlayerColorBtn(int value)
+    {
+        switch(value) {
+            case 0 : myPlayer.PlayerColor = 0;
+                myPlayer.SR.color = new Color(1, 0, 0, 1);
+                break;
+            case 1: myPlayer.PlayerColor = 1;
+                myPlayer.SR.color = new Color(0, 1, 0, 1);
+                break;
+            case 2 : myPlayer.PlayerColor = 2;
+                myPlayer.SR.color = new Color(0, 0, 1, 1);
+                break;
+        }
     }
     #endregion
 
@@ -190,5 +292,4 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         chatTextGo.GetComponent<Text>().text = msg;
     }
     #endregion
-
 }

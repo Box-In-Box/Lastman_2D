@@ -12,7 +12,6 @@ public class MultiManager : MonoBehaviourPunCallbacks
 {
     public PhotonView PV;
     public List<PlayerInfo> playerInfos;
-    public bool isStart, isEnd;
 
     IEnumerator Start()
     {
@@ -82,7 +81,7 @@ public class MultiManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void StartSyncRPC()
     {
-        isStart = true;
+        singleton.isStart = true;
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
