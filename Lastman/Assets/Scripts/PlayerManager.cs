@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviourPun, IPunObservable
 
     public string nick;
     public int actor;
-
+    
     void Start()
     {
         Init();
@@ -44,9 +44,6 @@ public class PlayerManager : MonoBehaviourPun, IPunObservable
         LM = GameObject.Find("LobbyManager").GetComponent<LobbyManager>();
         LM.players.Add(this);
 
-        SetPlayerColor(playerColor);
-
-        LM.SortPlayers();
         LM.RoomRenewal();
     }
 
@@ -106,31 +103,10 @@ public class PlayerManager : MonoBehaviourPun, IPunObservable
 			curPos = (Vector3)stream.ReceiveNext(); 
     }
 
-    [SerializeField] int playerColor;
-    public SpriteRenderer SR;
-    public int PlayerColor { get => playerColor; set => PV.RPC(nameof(SetPlayerInfo), RpcTarget.All, value); }
-    [PunRPC] void SetPlayerInfo(int value) => SetPlayerColor(value);
-
     void OnDestroy()
     {
         if (SceneManager.GetActiveScene().name == "Lobby") {
             LM.players.Remove(this);
-            LM.SortPlayers();
-        }
-    }
-
-    public void SetPlayerColor(int value)
-    {
-        switch(value) {
-            case 0 : playerColor = 0;
-                SR.color = new Color(1, 0, 0, 1);
-                break;
-            case 1: playerColor = 1;
-                SR.color = new Color(0, 1, 0, 1);
-                break;
-            case 2 : playerColor = 2;
-                SR.color = new Color(0, 0, 1, 1);
-                break;
         }
     }
 }

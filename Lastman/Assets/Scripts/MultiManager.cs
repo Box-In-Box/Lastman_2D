@@ -30,7 +30,7 @@ public class MultiManager : MonoBehaviourPunCallbacks
         //씬 동기화
         while (!singleton.AllhasTag("loadScene")) yield return null;
 
-        PhotonNetwork.Instantiate("Player", new Vector2(Random.Range(-12f, 0f), 3f), QI);
+        PhotonNetwork.Instantiate("Player", new Vector2(Random.Range(-12f, 0f), 1f), QI);
         //씬의 모든 플레이어 동기화
         while (!singleton.AllhasTag("loadPlayer")) yield return null;
     }
@@ -39,7 +39,7 @@ public class MultiManager : MonoBehaviourPunCallbacks
     {
         for (int i = 0; i <PhotonNetwork.PlayerList.Length; i++) {
             Player player = PhotonNetwork.PlayerList[i];
-            playerInfos.Add(new PlayerInfo(player.NickName, player.ActorNumber, 0, PhotonNetwork.Time + 3.0, false));
+            playerInfos.Add(new PlayerInfo(player.NickName, player.ActorNumber, 0, PhotonNetwork.Time + 1.0, false));
         }
         MasterSendPlayerInfo(INIT);
     }

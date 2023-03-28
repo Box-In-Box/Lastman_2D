@@ -172,5 +172,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nick: 
   actor: 0
-  playerColor: 0
-  SR: {fileID: 8808240812388025011}

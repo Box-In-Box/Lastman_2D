@@ -88,10 +88,9 @@ public class Singleton : MonoBehaviourPun
 
     public void GameEnd()
     {
-        if (Master()) {
-            PhotonNetwork.CurrentRoom.IsOpen = true;
-            PhotonNetwork.LoadLevel("Lobby");
-        }
+        PhotonNetwork.CurrentRoom.IsOpen = true;
+        PhotonNetwork.LoadLevel("Lobby");
+        singleton.isStart = false;
     }
 
     void OnGUI()
