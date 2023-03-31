@@ -78,7 +78,7 @@ public class Singleton : MonoBehaviourPun
 	}
     #endregion
 
-    public void GameStartBtn()
+    public void GameStart()
     {
         if (Master()) {
             PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -88,9 +88,11 @@ public class Singleton : MonoBehaviourPun
 
     public void GameEnd()
     {
-        PhotonNetwork.CurrentRoom.IsOpen = true;
-        PhotonNetwork.LoadLevel("Lobby");
-        singleton.isStart = false;
+        if (Master()) {
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+            PhotonNetwork.LoadLevel("Lobby");
+            isStart = false;
+        }
     }
 
     void OnGUI()

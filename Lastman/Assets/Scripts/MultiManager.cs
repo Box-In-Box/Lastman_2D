@@ -30,7 +30,6 @@ public class MultiManager : MonoBehaviourPunCallbacks
         //씬 동기화
         while (!singleton.AllhasTag("loadScene")) yield return null;
 
-        PhotonNetwork.Instantiate("Player", new Vector2(Random.Range(-12f, 0f), 1f), QI);
         //씬의 모든 플레이어 동기화
         while (!singleton.AllhasTag("loadPlayer")) yield return null;
     }
@@ -77,11 +76,26 @@ public class MultiManager : MonoBehaviourPunCallbacks
         playerInfos = JsonUtility.FromJson<Serialization<PlayerInfo>>(jdata).target;
     }
 
-
     [PunRPC]
-    void StartSyncRPC()
+    void StartSyncRPC() //시작은 LobbyManager > singleton에서
     {
         singleton.isStart = true;
+    }
+
+    public IEnumerator FinishGame() //게임 끝
+    {
+        if (singleton.Master())
+            PV.RPC("FinishSyncRPC", RpcTarget.AllViaServer);
+        
+        yield return new WaitForSeconds(0.5f);
+
+        singleton.GameEnd();
+    }
+
+    [PunRPC]
+    void FinishSyncRPC()
+    {
+        singleton.isStart = false;
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)

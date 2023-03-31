@@ -170,5 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ccf24607680f948a41f12c767a9e11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LM: {fileID: 0}
   nick: 
   actor: 0

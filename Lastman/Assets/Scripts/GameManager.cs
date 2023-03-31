@@ -7,9 +7,11 @@ using static Singleton;
 public class GameManager : MonoBehaviour
 {
     public Button GameEndBtn;
+    MultiManager multiManager;
 
     void Start()
     {
-        GameEndBtn.onClick.AddListener(()=> singleton.GameEnd());
+        multiManager = FindObjectOfType<MultiManager>();
+        GameEndBtn.onClick.AddListener(()=> StartCoroutine(multiManager.FinishGame()));
     }
 }

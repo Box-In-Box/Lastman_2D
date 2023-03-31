@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class PlayerManager : MonoBehaviourPun, IPunObservable
 {
     MultiManager MM;
-    LobbyManager LM;
+    public LobbyManager LM;
     PhotonView PV;
     Vector3 curPos;
     Rigidbody2D rigid;
@@ -19,10 +19,17 @@ public class PlayerManager : MonoBehaviourPun, IPunObservable
     public string nick;
     public int actor;
     
+    bool isSceneChanged = false;
+    
+    void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     void Start()
     {
         Init();
-        if (SceneManager.GetActiveScene().name == "Lobby") LobbyPlayerSetting();
+        LobbyPlayerSetting();
     }
 
     void Init()
@@ -39,18 +46,19 @@ public class PlayerManager : MonoBehaviourPun, IPunObservable
 
     void LobbyPlayerSetting()
     {
-        rigid.bodyType = RigidbodyType2D.Static;
-
         LM = GameObject.Find("LobbyManager").GetComponent<LobbyManager>();
         LM.players.Add(this);
-
         LM.RoomRenewal();
     }
 
     void Update()
     {
-        if (!singleton.isStart)
+        if (!singleton.isStart) {
+            if (LM == null && SceneManager.GetActiveScene().name == "Lobby") {
+                LobbyPlayerSetting();
+            }
             return;
+        }
 
         if (!PV.IsMine) OtherMove();
 

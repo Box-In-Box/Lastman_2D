@@ -50,6 +50,8 @@ MonoBehaviour:
   - SetIsUse
   - GetRoomInfoRPC
   - PrintPlayerSlot
+  - FinishSyncRPC
+  - SetIsStartRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

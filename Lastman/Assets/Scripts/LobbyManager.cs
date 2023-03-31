@@ -29,9 +29,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public GameObject roomPanel;
     public Text roomInfoText;
     public GameObject[] playerSlot;
+    public Transform[] playerInstantiatePosition;
     public List<PlayerManager> players = new List<PlayerManager>();
     public Transform chatContent;
-    public GameObject chatText;
     public InputField chatInput;
     public Button gameStartBtn;
 
@@ -54,7 +54,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     void Setting()
     {
         SetPanel(LOGIN);
-        gameStartBtn.onClick.AddListener(()=> singleton.GameStartBtn());
+        gameStartBtn.onClick.AddListener(()=> singleton.GameStart());
     }
 
     void Update()
@@ -183,7 +183,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(CP);
 
-        EnterRoom(); 
+        EnterRoom();
+
+        PhotonNetwork.Instantiate("Player", new Vector2(0, 0), QI).GetComponent<PlayerManager>();
 
         PV.RPC("PrintPlayerSlot", RpcTarget.All);
     }
@@ -244,8 +246,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         SetPanel(ROOM);
         chatInput.text = ""; 
-
-        PhotonNetwork.Instantiate("Player", new Vector2(0, 0), QI).GetComponent<PlayerManager>();
         RoomRenewal();
     }
 
@@ -260,26 +260,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         for(int i = 0; i < players.Count; i++) {
             if (CP["Slot_0"].Equals(players[i].nick)) {
                 playerSlot[0].transform.GetChild(0).GetComponent<Text>().text = players[i].nick;
-                players[i].gameObject.transform.SetParent(playerSlot[0].transform);
-                players[i].gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                players[i].gameObject.transform.position = playerInstantiatePosition[0].position;
                 continue;
             }
             else if (CP["Slot_1"].Equals(players[i].nick)) {
                 playerSlot[1].transform.GetChild(0).GetComponent<Text>().text = players[i].nick;
-                players[i].gameObject.transform.SetParent(playerSlot[1].transform);
-                players[i].gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                players[i].gameObject.transform.position = playerInstantiatePosition[1].position;
                 continue;
             }
             else if (CP["Slot_2"].Equals(players[i].nick)) {
                 playerSlot[2].transform.GetChild(0).GetComponent<Text>().text = players[i].nick;
-                players[i].gameObject.transform.SetParent(playerSlot[2].transform);
-                players[i].gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                players[i].gameObject.transform.position = playerInstantiatePosition[2].position;
                 continue;
             }
             else if (CP["Slot_3"].Equals(players[i].nick)) {
                 playerSlot[3].transform.GetChild(0).GetComponent<Text>().text = players[i].nick;
-                players[i].gameObject.transform.SetParent(playerSlot[3].transform);
-                players[i].gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                players[i].gameObject.transform.position = playerInstantiatePosition[3].position;
                 continue;
             }
         }
@@ -308,7 +304,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void ChatRPC(string msg)
     {
-        GameObject chatTextGo = Instantiate(chatText) as GameObject;
+        GameObject chatTextGo = Instantiate(Resources.Load("chatText")) as GameObject;
         chatTextGo.transform.SetParent(chatContent, false);
         chatTextGo.GetComponent<Text>().text = msg;
     }
