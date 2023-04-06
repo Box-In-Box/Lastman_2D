@@ -8,7 +8,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Singleton : MonoBehaviourPun
 {
-    public const byte INIT = 0, REMOVE = 1, DIEWALL = 2, DIE = 3;
+    public const byte INIT = 0, REMOVE = 1, DIE = 2;
     public static readonly Quaternion QI = Quaternion.identity;
     public bool isStart;
 

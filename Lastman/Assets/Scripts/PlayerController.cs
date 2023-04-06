@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using static Singleton;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace TopDown
 {
@@ -17,17 +18,56 @@ namespace TopDown
         Vector3 curPos;
         Rigidbody2D rigid;
         Animator anim;
+        public Canvas canvas;
+        public Text nickNameText;
+        public Image healthImage;
 
         [Header("-----Player Info-----")]
         public string nick;
         public int actor;
-        public bool isDie;
-        float speed = 3;
-        
-        void Awake()
+
+        [Header("-----Player State-----")]
+        #region Player Properties
+        //최대 체력
+        [SerializeField] float maxHealth; //default == 100
+        public float MaxHealth { get => maxHealth; set => ActionRPC(nameof(SetMaxHealthRPC), value); }
+        [PunRPC] void SetMaxHealthRPC(float value) => maxHealth = value;
+
+        //현제 체력
+        [SerializeField] float health;
+        public float Health { get => health; set => ActionRPC(nameof(SetHealthRPC), value); }
+        [PunRPC] void SetHealthRPC(float value) { health = value; healthImage.fillAmount = Health / MaxHealth; }
+
+        //스피드
+        [SerializeField] float speed; //default = 2
+        public float Speed { get => speed; set => ActionRPC(nameof(SetSpeedRPC), value); }
+        [PunRPC] void SetSpeedRPC(float value) => speed = value;
+
+        //바라보는 방향
+        [SerializeField] int direction;
+        public int Direction { get => direction; set => ActionRPC(nameof(SetDirectionRPC), value); }
+        [PunRPC] void SetDirectionRPC(int value) => direction = value;
+
+        //Die
+        [SerializeField] bool isDie;
+        public bool IsDie { get => isDie; set => ActionRPC(nameof(SetIsDieRPC), value); }
+        [PunRPC] void SetIsDieRPC(bool value) => isDie = value;
+
+        void ActionRPC(string functionName, object value)
         {
-            DontDestroyOnLoad(this);
+            photonView.RPC(functionName, RpcTarget.All, value);
         }
+
+        public void InvokeProperties()
+        {
+            Direction = Direction;
+            Health = Health;
+            IsDie = IsDie;
+            Speed = Speed;
+        }
+        #endregion
+        
+        void Awake() => DontDestroyOnLoad(this);
 
         void Start()
         {
@@ -35,7 +75,7 @@ namespace TopDown
             LobbyPlayerSetting();
         }
 
-        void Init() //Lobby
+        void Init() //in Lobby
         {
             rigid = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
@@ -45,10 +85,17 @@ namespace TopDown
             PV = photonView;
             nick = PV.Owner.NickName;
             actor = PV.OwnerActorNr;
+
+            nickNameText.text = nick;
+            nickNameText.color = PV.IsMine ? Color.blue : Color.gray;
+
+            canvas.gameObject.SetActive(false);
         }
 
         void LobbyPlayerSetting()
         {
+            canvas.gameObject.SetActive(false);
+
             LM = GameObject.Find("LobbyManager").GetComponent<LobbyManager>();
             LM.players.Add(this);
             LM.RoomRenewal();
@@ -57,6 +104,9 @@ namespace TopDown
         void GamePlayerSetting()
         {
             MM = GameObject.Find("MultiManager").GetComponent<MultiManager>();
+            Health = MaxHealth;
+
+            canvas.gameObject.SetActive(true);
         }
 
         void Update()
@@ -75,6 +125,7 @@ namespace TopDown
                 return;
                 
             Move();
+            Shot();
         }
 
         void OtherMove()
@@ -89,23 +140,7 @@ namespace TopDown
             anim.SetInteger("Direction", Direction);
         }
 
-        /* 플레이어 프로퍼티*/
-        [SerializeField] int direction;
-        public int Direction { get => direction; set => ActionRPC(nameof(SetDirectionRPC), value); }
-        [PunRPC] void SetDirectionRPC(int value) => direction = value;
-
-        void ActionRPC(string functionName, object value)
-        {
-            photonView.RPC(functionName, RpcTarget.All, value);
-        }
-
-        public void InvokeProperties()
-        {
-            Direction = Direction;
-        }
-        /**********/
-
-        bool Forbidden() { return !PV.IsMine || !singleton.isStart || isDie; }
+        bool Forbidden() { return !PV.IsMine || !singleton.isStart || IsDie; }
         
         public bool isMinePlayer() { return PV.IsMine; }
 
@@ -128,29 +163,42 @@ namespace TopDown
             else if (Input.GetKey(KeyCode.S)) {
                 curPos.y = -1;
                 Direction = 0;
-                
             }
             curPos.Normalize();
-            rigid.velocity = speed * curPos;
+            rigid.velocity = Speed * curPos;
 
             anim.SetInteger("Direction", Direction);
             anim.SetBool("IsMoving", curPos.magnitude > 0);
         }
 
-        public void OnTriggerStay2D(Collider2D col) {
+        void Shot()
+        {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                PhotonNetwork.Instantiate("Bullet", transform.position, Singleton.QI)
+                    .GetComponent<PhotonView>().RPC("DirRPC", RpcTarget.All, Direction);
+            }
+        }
+
+        public void Hit() => Health -= 20;
+
+        public void OnTriggerEnter2D(Collider2D col) {
             if (Forbidden())
                 return;
 
-            //OhterSendMaster(col.GetComponent<PhotonView>());
-            //singleton.SetPos(transform, new Vector3(0, 100, 0));
+            OhterSendMaster(col.GetComponent<PhotonView>());
         }
 
         public void OhterSendMaster(PhotonView colPV)
         {
-            if (colPV != null && singleton.ActorNum() != colPV.Owner.ActorNumber)
-                MM.PV.RPC("MasterReceiveRPC", RpcTarget.MasterClient, DIE, singleton.ActorNum(), colPV.Owner.ActorNumber);
+            if (colPV != null && singleton.ActorNum() != colPV.Owner.ActorNumber) {
+                Hit();
 
-            //else MM.PV.RPC("MasterReceiveRPC", RpcTarget.MasterClient, DIEWALL, singleton.ActorNum(), 0);
+                if (Health <= 0) {
+                    IsDie = true;
+                    MM.PV.RPC("MasterReceiveRPC", RpcTarget.MasterClient, DIE, singleton.ActorNum(), colPV.Owner.ActorNumber);
+                    GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
+                }  
+            }
         }
 
         void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

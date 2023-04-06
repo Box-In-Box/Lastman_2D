@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Wall
+  - Props
   layers:
   - Default
   - TransparentFX
@@ -28,7 +30,7 @@ TagManager:
   - Layer 1
   - Layer 2
   - Layer 3
-  - 
+  - UISsss
   - 
   - 
   - 
@@ -49,4 +51,10 @@ TagManager:
     locked: 0
   - name: Layer 3
     uniqueID: 4189426099
+    locked: 0
+  - name: PlayerUI
+    uniqueID: 3079825487
+    locked: 0
+  - name: UI
+    uniqueID: 1096176895
     locked: 0

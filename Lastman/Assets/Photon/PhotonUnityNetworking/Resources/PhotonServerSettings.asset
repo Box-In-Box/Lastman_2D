@@ -53,6 +53,13 @@ MonoBehaviour:
   - FinishSyncRPC
   - SetIsStartRPC
   - SetDirectionRPC
+  - DirRPC
+  - DestroyRPC
+  - DieRPC
+  - SetHealthRPC
+  - SetMaxHealthRPC
+  - SetIsDieRPC
+  - SetSpeedRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
