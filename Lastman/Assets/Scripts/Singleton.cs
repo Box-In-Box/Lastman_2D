@@ -91,9 +91,52 @@ public class Singleton : MonoBehaviourPun
         if (Master()) {
             PhotonNetwork.CurrentRoom.IsOpen = true;
             PhotonNetwork.LoadLevel("Lobby");
-            isStart = false;
         }
     }
+
+    #region Room Slot Properties
+    public void SetPlayerSlot()
+    {
+        Hashtable CP = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        if (CP["Slot_0"].Equals(""))
+            CP["Slot_0"] = PhotonNetwork.NickName;
+        else if (CP["Slot_1"].Equals(""))
+            CP["Slot_1"] = PhotonNetwork.NickName;
+        else if (CP["Slot_2"].Equals(""))
+            CP["Slot_2"] = PhotonNetwork.NickName;
+        else if (CP["Slot_3"].Equals(""))
+            CP["Slot_3"] = PhotonNetwork.NickName;
+        
+        PhotonNetwork.CurrentRoom.SetCustomProperties(CP);
+    }
+
+    public void RemovePlayerSlot(Player player)
+    {
+        Hashtable CP = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        if (CP["Slot_0"].Equals(player.NickName))
+            CP["Slot_0"] = "";
+        else if (CP["Slot_1"].Equals(player.NickName))
+            CP["Slot_1"] = "";
+        else if (CP["Slot_2"].Equals(player.NickName))
+            CP["Slot_2"] = "";
+        else if (CP["Slot_3"].Equals(player.NickName))
+            CP["Slot_3"] = "";
+        
+        PhotonNetwork.CurrentRoom.SetCustomProperties(CP);
+    }
+
+    public void PrintPlayerSlot()
+    {
+        Hashtable CP = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        print("[Slot_0] : " + ( CP["Slot_0"].Equals("") ? "Null": CP["Slot_0"] ) + ",   "
+            + "[Slot_1] : " + ( CP["Slot_1"].Equals("") ? "Null": CP["Slot_1"] ) + ",   "
+            + "[Slot_2] : " + ( CP["Slot_2"].Equals("") ? "Null": CP["Slot_2"] ) + ",   "
+            + "[Slot_3] : " + ( CP["Slot_3"].Equals("") ? "Null": CP["Slot_3"] ) );
+    }
+    #endregion
 
     void OnGUI()
     {

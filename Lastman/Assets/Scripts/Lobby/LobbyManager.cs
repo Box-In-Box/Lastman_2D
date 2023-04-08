@@ -170,24 +170,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     { 
-        Hashtable CP = PhotonNetwork.CurrentRoom.CustomProperties;
-        
-        if (CP["Slot_0"].Equals(""))
-            CP["Slot_0"] = PhotonNetwork.NickName;
-        else if (CP["Slot_1"].Equals(""))
-            CP["Slot_1"] = PhotonNetwork.NickName;
-        else if (CP["Slot_2"].Equals(""))
-            CP["Slot_2"] = PhotonNetwork.NickName;
-        else if (CP["Slot_3"].Equals(""))
-            CP["Slot_3"] = PhotonNetwork.NickName;
-
-        PhotonNetwork.CurrentRoom.SetCustomProperties(CP);
-
-        EnterRoom();
-
-        PhotonNetwork.Instantiate("PFPlayer", new Vector2(0, 0), QI).GetComponent<TopDown.PlayerController>();
-
+        singleton.SetPlayerSlot();
         PV.RPC("PrintPlayerSlot", RpcTarget.All);
+        EnterRoom();
+        PhotonNetwork.Instantiate("PFPlayer", new Vector2(0, 0), QI).GetComponent<TopDown.PlayerController>();
     }
 
     public void LeaveRoom()
@@ -226,23 +212,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             if (playerSlot[i].transform.GetChild(0).GetComponent<Text>().text == otherPlayer.NickName)
                 playerSlot[i].transform.GetChild(0).GetComponent<Text>().text = "";
 
-        if (singleton.Master())
+        if (singleton.Master()) {
+            singleton.RemovePlayerSlot(otherPlayer);
+            PV.RPC("PrintPlayerSlot", RpcTarget.All);
             PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + otherPlayer.NickName + "님이 퇴장하셨습니다</color>");
-
-        Hashtable CP = PhotonNetwork.CurrentRoom.CustomProperties;
-
-        if (CP["Slot_0"].Equals(otherPlayer.NickName))
-            CP["Slot_0"] = "";
-        else if (CP["Slot_1"].Equals(otherPlayer.NickName))
-            CP["Slot_1"] = "";
-        else if (CP["Slot_2"].Equals(otherPlayer.NickName))
-            CP["Slot_2"] = "";
-        else if (CP["Slot_3"].Equals(otherPlayer.NickName))
-            CP["Slot_3"] = "";
-
-        PhotonNetwork.CurrentRoom.SetCustomProperties(CP);
-
-        PV.RPC("PrintPlayerSlot", RpcTarget.All);
+        }
     }
 
     void EnterRoom()
@@ -255,11 +229,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void RoomRenewal()
     {
         SortPlayers();
-
         roomInfoText.text = PhotonNetwork.CurrentRoom.Name + " / " + "현재" + PhotonNetwork.CurrentRoom.PlayerCount + "명 / " + "최대" +PhotonNetwork.CurrentRoom.MaxPlayers + "명";
-
         Hashtable CP = PhotonNetwork.CurrentRoom.CustomProperties;
-
         Vector3 playerPosition;
 
         for(int i = 0; i < players.Count; i++) {
@@ -294,16 +265,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
-    void PrintPlayerSlot()
-    {
-        Hashtable CP = PhotonNetwork.CurrentRoom.CustomProperties;
+    [PunRPC] void PrintPlayerSlot() => singleton.PrintPlayerSlot();
 
-        print("[Slot_0] : " + ( CP["Slot_0"].Equals("") ? "Null": CP["Slot_0"] ) + ",   "
-            + "[Slot_1] : " + ( CP["Slot_1"].Equals("") ? "Null": CP["Slot_1"] ) + ",   "
-            + "[Slot_2] : " + ( CP["Slot_2"].Equals("") ? "Null": CP["Slot_2"] ) + ",   "
-            + "[Slot_3] : " + ( CP["Slot_3"].Equals("") ? "Null": CP["Slot_3"] ) );
-    }
     #endregion
 
     #region Chat
@@ -324,7 +287,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region ETC - 플레이어 정렬, 활성화 패널
-    
     public void SortPlayers() => players.Sort((p1, p2) => p1.actor.CompareTo(p2.actor));
 
     void SetPanel(byte value)   //한 개의 패널만 활성화

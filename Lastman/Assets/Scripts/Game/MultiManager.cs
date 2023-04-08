@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using static Singleton;
 using ExitGames.Client.Photon;
 
-
 public class MultiManager : MonoBehaviourPunCallbacks
 {
     public PhotonView PV;
@@ -83,12 +82,12 @@ public class MultiManager : MonoBehaviourPunCallbacks
 
     public IEnumerator FinishGame() //게임 끝
     {
-        if (singleton.Master())
+        if (singleton.Master()) {
             PV.RPC("FinishSyncRPC", RpcTarget.AllViaServer);
-        
-        yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(3f);
+            singleton.GameEnd();
+        }
 
-        singleton.GameEnd();
     }
 
     [PunRPC]
@@ -101,8 +100,12 @@ public class MultiManager : MonoBehaviourPunCallbacks
     {
         if (singleton.Master()) {
             MasterRemovePlayerInfo(otherPlayer.ActorNumber);
+            singleton.RemovePlayerSlot(otherPlayer);
+            PV.RPC("PrintPlayerSlot", RpcTarget.All);
         }
     }
+
+    [PunRPC] void PrintPlayerSlot() => singleton.PrintPlayerSlot();
 
     void MasterRemovePlayerInfo(int actorNumber)
     {

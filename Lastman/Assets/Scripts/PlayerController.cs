@@ -14,9 +14,11 @@ namespace TopDown
         [Header("-----Component-----")]
         [SerializeField] LobbyManager LM;
         [SerializeField] MultiManager MM;
+        [SerializeField] GameManager GM;
         [SerializeField] PhotonView PV;
         Vector3 curPos;
         Rigidbody2D rigid;
+        SpriteRenderer renderer;
         Animator anim;
         public Canvas canvas;
         public Text nickNameText;
@@ -79,6 +81,7 @@ namespace TopDown
         {
             rigid = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
+            renderer = GetComponent<SpriteRenderer>();
 
             singleton.SetTag("loadPlayer", true);
 
@@ -92,25 +95,36 @@ namespace TopDown
             canvas.gameObject.SetActive(false);
         }
 
-        void LobbyPlayerSetting()
+        void LobbyPlayerSetting() //로비 들어왔을 때, 게임에서 돌아왔을 때
         {
             canvas.gameObject.SetActive(false);
 
             LM = GameObject.Find("LobbyManager").GetComponent<LobbyManager>();
             LM.players.Add(this);
             LM.RoomRenewal();
+
+            Health = MaxHealth;
+            IsDie = false;
+            Direction = 0;
+            anim.SetInteger("Direction", Direction);
+
+            rigid.bodyType = RigidbodyType2D.Static;
         }
 
-        void GamePlayerSetting()
+        void GamePlayerSetting() //게임에 들어갔을 때
         {
             MM = GameObject.Find("MultiManager").GetComponent<MultiManager>();
-            Health = MaxHealth;
-
+            GM = GameObject.Find("GameManager").GetComponent<GameManager>();
+            GM.players.Add(this);
+            GM.SortPlayers();
             canvas.gameObject.SetActive(true);
+
+            rigid.bodyType = RigidbodyType2D.Dynamic;
         }
 
         void Update()
         {
+            //로비 <-> 게임 씬 전환 세팅
             if (!singleton.isStart) {
                 if (LM == null && SceneManager.GetActiveScene().name == "Lobby")
                     LobbyPlayerSetting();
@@ -121,8 +135,7 @@ namespace TopDown
 
             if (!PV.IsMine) OtherMove();
 
-            if (Forbidden())
-                return;
+            if (Forbidden()) return;
                 
             Move();
             Shot();
@@ -174,8 +187,9 @@ namespace TopDown
         void Shot()
         {
             if (Input.GetKeyDown(KeyCode.Space)) {
-                PhotonNetwork.Instantiate("Bullet", transform.position, Singleton.QI)
-                    .GetComponent<PhotonView>().RPC("DirRPC", RpcTarget.All, Direction);
+                GameObject bullet = PhotonNetwork.Instantiate("Bullet", transform.position, Singleton.QI);
+                    bullet.GetComponent<PhotonView>().RPC("DirRPC", RpcTarget.All, Direction);
+                    bullet.GetComponent<SpriteRenderer>().sortingLayerID = renderer.sortingLayerID;
             }
         }
 
@@ -211,9 +225,14 @@ namespace TopDown
 
         void OnDestroy()
         {
-            if (SceneManager.GetActiveScene().name == "Lobby") {
+            if (SceneManager.GetActiveScene().name == "Lobby")
                 LM.players.Remove(this);
+
+            if (SceneManager.GetActiveScene().name == "Game") {
+                GM.players.Remove(this);
+                GM.SortPlayers();
             }
+                
         }
 
         void IPunInstantiateMagicCallback.OnPhotonInstantiate(PhotonMessageInfo info)

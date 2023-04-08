@@ -350,6 +350,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone Lantern (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 84395be60ff2def43bb58fa039614eab,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84395be60ff2def43bb58fa039614eab, type: 3}
 --- !u!4 &22799254 stripped
@@ -947,6 +952,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone Lantern (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 84395be60ff2def43bb58fa039614eab,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84395be60ff2def43bb58fa039614eab, type: 3}
 --- !u!4 &45305990 stripped
@@ -1397,7 +1407,7 @@ GameObject:
   - component: {fileID: 85315870}
   m_Layer: 21
   m_Name: Tilemap
-  m_TagString: Wall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1673,6 +1683,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stone Lantern (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 84395be60ff2def43bb58fa039614eab,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84395be60ff2def43bb58fa039614eab, type: 3}
@@ -2549,6 +2564,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Barrel
       objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 413081fc53a78a043b38591243616398,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 413081fc53a78a043b38591243616398,
         type: 3}
       propertyPath: m_RootOrder
@@ -2734,6 +2754,11 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -44025399
       objectReference: {fileID: 0}
+    - target: {fileID: 6075975974933568967, guid: 78e9efbdf9b33994da8dfbe530f65e5e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 6075975974975622417, guid: 78e9efbdf9b33994da8dfbe530f65e5e,
         type: 3}
       propertyPath: m_RootOrder
@@ -2803,6 +2828,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayerID
       value: -44025399
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075975975660753996, guid: 78e9efbdf9b33994da8dfbe530f65e5e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 6223746544896227164, guid: 78e9efbdf9b33994da8dfbe530f65e5e,
         type: 3}
@@ -3112,6 +3142,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stone Lantern (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 84395be60ff2def43bb58fa039614eab,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84395be60ff2def43bb58fa039614eab, type: 3}
@@ -4366,6 +4401,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Pot A
       objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: ac719b1d0f58391469cc19fd947ca44c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: ac719b1d0f58391469cc19fd947ca44c,
         type: 3}
       propertyPath: m_RootOrder
@@ -4791,6 +4831,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 9e7797bb065982d4497d030f065d6e2f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 9e7797bb065982d4497d030f065d6e2f,
         type: 3}
       propertyPath: m_RootOrder
@@ -5137,7 +5182,7 @@ GameObject:
   - component: {fileID: 363469935}
   m_Layer: 21
   m_Name: Tilemap
-  m_TagString: Wall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5623,6 +5668,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Crate Small (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8150476868300563372, guid: 2e2ac125e54a1e44780363d638b1df34,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 8150476868300563375, guid: 2e2ac125e54a1e44780363d638b1df34,
         type: 3}
       propertyPath: m_RootOrder
@@ -5858,6 +5908,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone Lantern (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 84395be60ff2def43bb58fa039614eab,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84395be60ff2def43bb58fa039614eab, type: 3}
 --- !u!4 &428795618 stripped
@@ -5932,6 +5987,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stone T6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: d5762f992ea3bd544bb8287f66e8f844,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5762f992ea3bd544bb8287f66e8f844, type: 3}
@@ -6513,6 +6573,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone T7
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: f826bf48ad5bedc4ab6cabe6c4e498e8,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f826bf48ad5bedc4ab6cabe6c4e498e8, type: 3}
 --- !u!4 &494612808 stripped
@@ -6617,6 +6682,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Gravestone T2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 6242b925f1d3e0d44a183102cd3d4c26,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 6242b925f1d3e0d44a183102cd3d4c26,
         type: 3}
@@ -6773,6 +6843,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 349675537}
     m_Modifications:
+    - target: {fileID: 6075975974933568967, guid: 78e9efbdf9b33994da8dfbe530f65e5e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 6075975974975622417, guid: 78e9efbdf9b33994da8dfbe530f65e5e,
         type: 3}
       propertyPath: m_RootOrder
@@ -6832,6 +6907,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stair M
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075975974975622418, guid: 78e9efbdf9b33994da8dfbe530f65e5e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075975975660753996, guid: 78e9efbdf9b33994da8dfbe530f65e5e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78e9efbdf9b33994da8dfbe530f65e5e, type: 3}
@@ -7332,6 +7417,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Bush A
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 39562e88b536753438a3153c5fbdf7b8,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 39562e88b536753438a3153c5fbdf7b8,
         type: 3}
@@ -8283,6 +8373,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Pot B (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: 63ee4b6a40c55fd429759b807832ded1,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: 63ee4b6a40c55fd429759b807832ded1,
         type: 3}
@@ -11551,6 +11646,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone Cube
       objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: f6a5710827e32d3489da2c249e3bc400,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: f6a5710827e32d3489da2c249e3bc400,
         type: 3}
       propertyPath: m_RootOrder
@@ -11700,6 +11800,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Pot A (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: ac719b1d0f58391469cc19fd947ca44c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: ac719b1d0f58391469cc19fd947ca44c,
         type: 3}
@@ -12939,6 +13044,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stair M (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6075975974975622418, guid: 78e9efbdf9b33994da8dfbe530f65e5e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78e9efbdf9b33994da8dfbe530f65e5e, type: 3}
 --- !u!4 &849855666 stripped
@@ -13006,6 +13116,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stone Coffin Vert
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: e54d3c80cde4e314eae0912eca6a93ae,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: e54d3c80cde4e314eae0912eca6a93ae,
         type: 3}
@@ -13607,6 +13722,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Gravestone T3
       objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 3fcd8726c7cd53345947949baefbab35,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 3fcd8726c7cd53345947949baefbab35,
         type: 3}
       propertyPath: m_RootOrder
@@ -14047,6 +14167,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Bridge Gate
       objectReference: {fileID: 0}
+    - target: {fileID: 6644944589867386885, guid: b95acdc3b0c1a444c87723520fbab2f0,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b95acdc3b0c1a444c87723520fbab2f0, type: 3}
 --- !u!4 &936027238 stripped
@@ -14396,6 +14521,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone Bench S
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 8fd7cba4384381e4aad6dc90158fc9d5,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fd7cba4384381e4aad6dc90158fc9d5, type: 3}
 --- !u!4 &960416096 stripped
@@ -14415,6 +14545,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Chest
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 99597c7b4aa47494fb2b6061505735da,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 99597c7b4aa47494fb2b6061505735da,
         type: 3}
@@ -14706,6 +14841,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone T1
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 6d69371a87148ee4dac7b2b814437ffd,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d69371a87148ee4dac7b2b814437ffd, type: 3}
 --- !u!4 &977441392 stripped
@@ -14730,6 +14870,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Rune Pillar X3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1360264394729772843, guid: 4fad9c4de6b725a43bb1200ed9479c08,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 1360264394729772852, guid: 4fad9c4de6b725a43bb1200ed9479c08,
         type: 3}
@@ -14838,8 +14983,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1956438087}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &988559234
 MonoBehaviour:
@@ -20237,6 +20382,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Crate Small
       objectReference: {fileID: 0}
+    - target: {fileID: 8150476868300563372, guid: 2e2ac125e54a1e44780363d638b1df34,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 8150476868300563375, guid: 2e2ac125e54a1e44780363d638b1df34,
         type: 3}
       propertyPath: m_RootOrder
@@ -20392,6 +20542,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Pot C (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: f3cc2373308c11848977b28d974a9de0,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: f3cc2373308c11848977b28d974a9de0,
         type: 3}
       propertyPath: m_RootOrder
@@ -20521,6 +20676,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Rune Pillar Broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 8728cc48d2747494893fd60426c06f6e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8728cc48d2747494893fd60426c06f6e, type: 3}
@@ -21087,6 +21247,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone T2
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 713b33322b495794e92184973ece3034,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 713b33322b495794e92184973ece3034, type: 3}
 --- !u!4 &1179570030 stripped
@@ -21182,6 +21347,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Bush F (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 0505844a909d2ea4996c19b67b2a40b9,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 0505844a909d2ea4996c19b67b2a40b9,
         type: 3}
@@ -21419,7 +21589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  lerpSpeed: 1
+  lerpSpeed: 3
 --- !u!1001 &1222532664
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21759,6 +21929,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone T3
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: ba7fef4c928d8c4459466bf93171730e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba7fef4c928d8c4459466bf93171730e, type: 3}
 --- !u!4 &1244963157 stripped
@@ -22044,6 +22219,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone T4
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 4c4e80b50a323dc478f7c84e0b8fdad2,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c4e80b50a323dc478f7c84e0b8fdad2, type: 3}
 --- !u!4 &1254103386 stripped
@@ -22138,6 +22318,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Crate (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: fb2df5b680b64b449a78162ebcd98e97,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: fb2df5b680b64b449a78162ebcd98e97,
         type: 3}
@@ -22299,6 +22484,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Tree T1
       objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: f681a54372d73d74785b9c9d4ac477e8,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: f681a54372d73d74785b9c9d4ac477e8,
         type: 3}
       propertyPath: m_RootOrder
@@ -22459,6 +22649,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Pot C
       objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: f3cc2373308c11848977b28d974a9de0,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: f3cc2373308c11848977b28d974a9de0,
         type: 3}
       propertyPath: m_RootOrder
@@ -22588,6 +22783,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stone T2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 713b33322b495794e92184973ece3034,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 713b33322b495794e92184973ece3034, type: 3}
@@ -23714,6 +23914,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone T3
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: ba7fef4c928d8c4459466bf93171730e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba7fef4c928d8c4459466bf93171730e, type: 3}
 --- !u!4 &1353492237 stripped
@@ -23729,6 +23934,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 349675537}
     m_Modifications:
+    - target: {fileID: 6075975974933568967, guid: a92434f05fc24a2408687e0356655548,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 6075975974975622417, guid: a92434f05fc24a2408687e0356655548,
         type: 3}
       propertyPath: m_RootOrder
@@ -23789,6 +23999,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stair L
       objectReference: {fileID: 0}
+    - target: {fileID: 6075975974975622418, guid: a92434f05fc24a2408687e0356655548,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075975975660753996, guid: a92434f05fc24a2408687e0356655548,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a92434f05fc24a2408687e0356655548, type: 3}
 --- !u!4 &1358447437 stripped
@@ -23827,6 +24047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameEndBtn: {fileID: 1223716391}
+  players: []
 --- !u!4 &1360607796
 Transform:
   m_ObjectHideFlags: 0
@@ -23839,8 +24060,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1956438087}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1398836932
 PrefabInstance:
@@ -23868,6 +24089,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 9e7797bb065982d4497d030f065d6e2f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 9e7797bb065982d4497d030f065d6e2f,
         type: 3}
@@ -24464,6 +24690,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Tree T1
       objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: f681a54372d73d74785b9c9d4ac477e8,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: f681a54372d73d74785b9c9d4ac477e8,
         type: 3}
       propertyPath: m_RootOrder
@@ -24593,6 +24824,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stone Lantern
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 84395be60ff2def43bb58fa039614eab,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84395be60ff2def43bb58fa039614eab, type: 3}
@@ -25124,6 +25360,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Rune Pillar X2
       objectReference: {fileID: 0}
+    - target: {fileID: 5055698509961064897, guid: 6d6991dbbdeecb1488bbf78c063d1235,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 5055698509961064898, guid: 6d6991dbbdeecb1488bbf78c063d1235,
         type: 3}
       propertyPath: m_RootOrder
@@ -25607,6 +25848,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Wooden Gate
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 6a057178eb028e94fb93bf39262ea3e8,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 6a057178eb028e94fb93bf39262ea3e8,
         type: 3}
@@ -26187,6 +26433,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Pot B
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: 63ee4b6a40c55fd429759b807832ded1,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: 63ee4b6a40c55fd429759b807832ded1,
         type: 3}
@@ -30230,6 +30481,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Crate (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: fb2df5b680b64b449a78162ebcd98e97,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: fb2df5b680b64b449a78162ebcd98e97,
         type: 3}
       propertyPath: m_RootOrder
@@ -30699,6 +30955,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Crate
+      objectReference: {fileID: 0}
+    - target: {fileID: 2577585254963922480, guid: fb2df5b680b64b449a78162ebcd98e97,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2577585254963922481, guid: fb2df5b680b64b449a78162ebcd98e97,
         type: 3}
@@ -31560,6 +31821,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Gate T1
       objectReference: {fileID: 0}
+    - target: {fileID: 6644944589867386885, guid: 4be821d0b78ad5043985b57b738e951b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4be821d0b78ad5043985b57b738e951b, type: 3}
 --- !u!4 &1778571216 stripped
@@ -31684,6 +31950,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Tree T2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 7277dd75e907b27448ec1de08238d0bb,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 7277dd75e907b27448ec1de08238d0bb,
         type: 3}
@@ -32070,6 +32341,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Gravestone T1
       objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 6d9a1504606c57143b1a8bbc2249aabe,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 6d9a1504606c57143b1a8bbc2249aabe,
         type: 3}
       propertyPath: m_RootOrder
@@ -32284,6 +32560,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Brick T2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 5d42979a3c318c341b37b4b1f2c85750,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d42979a3c318c341b37b4b1f2c85750, type: 3}
@@ -32538,7 +32819,7 @@ GameObject:
   - component: {fileID: 1929470511}
   m_Layer: 21
   m_Name: Layer 2 - Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34615,6 +34896,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF Props Stone Bench W
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 8eb546cfc24c8c24196899cee5797135,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
     - target: {fileID: 7947911505844789837, guid: 8eb546cfc24c8c24196899cee5797135,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -34649,7 +34935,7 @@ GameObject:
   - component: {fileID: 1949893311}
   m_Layer: 22
   m_Name: Layer 3 - Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35068,6 +35354,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 349675537}
     m_Modifications:
+    - target: {fileID: 6075975974933568967, guid: b7a5fce6e52ebbf488a8e8516c6692cb,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 6075975974975622417, guid: b7a5fce6e52ebbf488a8e8516c6692cb,
         type: 3}
       propertyPath: m_RootOrder
@@ -35127,6 +35418,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stair Broken R
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075975974975622418, guid: b7a5fce6e52ebbf488a8e8516c6692cb,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075975975660753996, guid: b7a5fce6e52ebbf488a8e8516c6692cb,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6223746544896227164, guid: b7a5fce6e52ebbf488a8e8516c6692cb, type: 3}
@@ -35253,39 +35554,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1953677721}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1956438086
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1956438087}
-  m_Layer: 0
-  m_Name: -----Manager-----
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1956438087
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956438086}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 988559233}
-  - {fileID: 1360607796}
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1963883691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35293,6 +35561,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 349675537}
     m_Modifications:
+    - target: {fileID: 6075975974933568967, guid: 295e819650a63784185fc3d55ce9e650,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 6075975974975622417, guid: 295e819650a63784185fc3d55ce9e650,
         type: 3}
       propertyPath: m_RootOrder
@@ -35352,6 +35625,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stair Broken M
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075975974975622418, guid: 295e819650a63784185fc3d55ce9e650,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
+      objectReference: {fileID: 0}
+    - target: {fileID: 6075975975660753996, guid: 295e819650a63784185fc3d55ce9e650,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6223746544896227164, guid: 295e819650a63784185fc3d55ce9e650, type: 3}
@@ -35469,6 +35752,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Road Sign W
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055102311959635369, guid: 5c635e5bc09c93043a53ee0e17e89d0f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635375, guid: 5c635e5bc09c93043a53ee0e17e89d0f,
         type: 3}
@@ -36454,6 +36742,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF Props Stone Bench S (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: 8fd7cba4384381e4aad6dc90158fc9d5,
+        type: 3}
+      propertyPath: m_TagString
+      value: Props
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fd7cba4384381e4aad6dc90158fc9d5, type: 3}
