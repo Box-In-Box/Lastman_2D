@@ -27,6 +27,7 @@ namespace TopDown
         [Header("-----Player Info-----")]
         public string nick;
         public int actor;
+        public Transform attackPosition;
 
         [Header("-----Player State-----")]
         #region Player Properties
@@ -186,10 +187,13 @@ namespace TopDown
 
         void Shot()
         {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                GameObject bullet = PhotonNetwork.Instantiate("Bullet", transform.position, Singleton.QI);
-                    bullet.GetComponent<PhotonView>().RPC("DirRPC", RpcTarget.All, Direction);
-                    bullet.GetComponent<SpriteRenderer>().sortingLayerID = renderer.sortingLayerID;
+            if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - attackPosition.transform.position;
+                float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+                attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
+
+                PhotonNetwork.Instantiate("Bullet", attackPosition.transform.position, attackPosition.rotation)
+                    .GetComponent<SpriteRenderer>().sortingLayerID = renderer.sortingLayerID;
             }
         }
 

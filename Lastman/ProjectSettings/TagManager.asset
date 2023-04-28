@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Wall
   - Props
+  - Bullet
+  - ItemProps
   layers:
   - Default
   - TransparentFX
