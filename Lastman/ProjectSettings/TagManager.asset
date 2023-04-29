@@ -8,6 +8,7 @@ TagManager:
   - Props
   - Bullet
   - ItemProps
+  - Defence
   layers:
   - Default
   - TransparentFX

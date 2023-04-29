@@ -9,7 +9,12 @@ public class BulletScript : MonoBehaviourPunCallbacks
 {
     public PhotonView PV;
     public SpriteRenderer SR;
-    public float speed;
+    [SerializeField] float speed;
+
+    public float damage;
+
+    public void SetDamage(float damage) => PV.RPC("SetDamageRPC", RpcTarget.AllBuffered, damage);
+    [PunRPC] void SetDamageRPC(float _damage) => damage = _damage;
 
     void Start() => Destroy(gameObject, 3f);
 
@@ -27,9 +32,13 @@ public class BulletScript : MonoBehaviourPunCallbacks
                     PV.RPC("DestroyRPC", RpcTarget.AllBuffered);
             }
         }
-
-        if (col.tag == "ItemProps") {
-            col.gameObject.GetComponent<ItemPropObject>().Hit();
+        else if (col.tag == "ItemProps") {
+            col.gameObject.GetComponent<ItemPropObject>().Hit(damage);
+            PV.RPC("DestroyRPC", RpcTarget.AllBuffered);
+        }
+        else if (col.tag == "Defence") {
+            damage = 0; //방어 후 플레이어 히트 판정 수정용
+            if (PV.Owner != col.GetComponent<PhotonView>().Owner)
             PV.RPC("DestroyRPC", RpcTarget.AllBuffered);
         }
     }

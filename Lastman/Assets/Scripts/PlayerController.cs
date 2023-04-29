@@ -28,6 +28,7 @@ namespace TopDown
         public string nick;
         public int actor;
         public Transform attackPosition;
+        public Transform defencePosition;
 
         [Header("-----Player State-----")]
         #region Player Properties
@@ -46,10 +47,21 @@ namespace TopDown
         public float Speed { get => speed; set => ActionRPC(nameof(SetSpeedRPC), value); }
         [PunRPC] void SetSpeedRPC(float value) => speed = value;
 
+        //데미지
+        [SerializeField] float damage; //default = 2
+        public float Damage { get => damage; set => ActionRPC(nameof(SetDamageRPC), value); }
+        [PunRPC] void SetDamageRPC(float value) => damage = value;
+
         //바라보는 방향
         [SerializeField] int direction;
         public int Direction { get => direction; set => ActionRPC(nameof(SetDirectionRPC), value); }
         [PunRPC] void SetDirectionRPC(int value) => direction = value;
+
+        //공격 딜레이
+        [SerializeField] float attackDelay; //default = 0.5
+        [SerializeField] float defenceDelay; //default = 2
+        [SerializeField] bool attackable = true;
+        [SerializeField] bool defensible = true;
 
         //Die
         [SerializeField] bool isDie;
@@ -67,6 +79,7 @@ namespace TopDown
             Health = Health;
             IsDie = IsDie;
             Speed = Speed;
+            Damage = Damage;
         }
         #endregion
         
@@ -140,6 +153,7 @@ namespace TopDown
                 
             Move();
             Shot();
+            Defence();
         }
 
         void OtherMove()
@@ -187,29 +201,60 @@ namespace TopDown
 
         void Shot()
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            if (attackable && Input.GetKeyDown(KeyCode.Mouse0)) {
+                attackable = false;
+                StartCoroutine(AttackDelayCoroutine(attackDelay));
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - attackPosition.transform.position;
                 float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
                 attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
 
-                PhotonNetwork.Instantiate("Bullet", attackPosition.transform.position, attackPosition.rotation)
-                    .GetComponent<SpriteRenderer>().sortingLayerID = renderer.sortingLayerID;
+                GameObject go = PhotonNetwork.Instantiate("Bullet", attackPosition.transform.position, attackPosition.rotation);
+                go.GetComponent<SpriteRenderer>().sortingLayerID = renderer.sortingLayerID;
+                go.GetComponent<BulletScript>().SetDamage(Damage);
             }
         }
 
-        public void Hit() => Health -= 20;
+        void Defence()
+        {
+            if (defensible && Input.GetKeyDown(KeyCode.Space)) {
+                defensible = false;
+                StartCoroutine(DefenceDelayCoroutine(defenceDelay));
+                
+                PV.RPC("DefenceRPC", RpcTarget.AllBuffered);
+            }
+        }
+
+        IEnumerator AttackDelayCoroutine(float attackDelay)
+        {
+            yield return new WaitForSeconds(attackDelay);
+            attackable = true;
+        }
+
+        IEnumerator DefenceDelayCoroutine(float defenceDelay)
+        {
+            yield return new WaitForSeconds(defenceDelay);
+            defensible = true;
+        }
+
+        [PunRPC] void DefenceRPC()
+        {
+            defencePosition.GetChild(Direction).gameObject.SetActive(true);
+            defencePosition.GetChild(Direction).gameObject.GetComponent<DefenceScript>().DefenceActiveFalse();
+        }
+
+        public void Hit(float damage) => Health -= damage;
 
         public void OnTriggerEnter2D(Collider2D col) {
             if (Forbidden())
                 return;
 
-            OhterSendMaster(col.GetComponent<PhotonView>());
+            OhterSendMaster(col.GetComponent<PhotonView>(), col.GetComponent<BulletScript>().damage);
         }
 
-        public void OhterSendMaster(PhotonView colPV)
+        public void OhterSendMaster(PhotonView colPV, float damage)
         {
-            if (colPV != null && singleton.ActorNum() != colPV.Owner.ActorNumber) {
-                Hit();
+            if (colPV != null && PV.Owner != colPV.Owner) {
+                Hit(damage);
 
                 if (Health <= 0) {
                     IsDie = true;

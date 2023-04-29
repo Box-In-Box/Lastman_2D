@@ -27,9 +27,9 @@ public class ItemPropObject : MonoBehaviourPun
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void Hit()
+    public void Hit(float damage)
     {
-        Health -= 20;
+        Health -= damage;
 
         photonView.RPC("SetRGB", RpcTarget.AllBuffered);
 
