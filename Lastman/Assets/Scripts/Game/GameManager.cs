@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviourPun
             GameObject go =  PhotonNetwork.Instantiate("Props/" + fixedPropsName[ran], fixedPropPosition_Layer2.GetChild(i).position, Singleton.QI);
             go.layer = LayerMask.NameToLayer("Layer 2");
             go.GetComponent<SpriteRenderer>().sortingLayerName = "Layer 2";
+            go.transform.GetChild(1).gameObject.layer = LayerMask.NameToLayer("Layer 2"); //Floor 레이어 변경
         }
 
         //1층 랜덤 오브젝트 배치
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviourPun
                 GameObject go = PhotonNetwork.Instantiate("Props/" + randomPropsName[ran], randomPropPosition_Layer2.GetChild(i).position, Singleton.QI);
                 go.layer = LayerMask.NameToLayer("Layer 2");
                 go.GetComponent<SpriteRenderer>().sortingLayerName = "Layer 2";
+                go.transform.GetChild(1).gameObject.layer = LayerMask.NameToLayer("Layer 2"); //Floor 레이어 변경
             }
                 
         }

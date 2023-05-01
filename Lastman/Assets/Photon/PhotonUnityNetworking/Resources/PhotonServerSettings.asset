@@ -68,6 +68,10 @@ MonoBehaviour:
   - SetAttackDelayRPC
   - ActiveFalseRPC
   - DefenceRPC
+  - ShotRPC
+  - SetBulletSpeedRPC
+  - Shot0RPC
+  - Shot1RPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

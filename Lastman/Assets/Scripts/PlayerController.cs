@@ -16,6 +16,7 @@ namespace TopDown
         [SerializeField] MultiManager MM;
         [SerializeField] GameManager GM;
         [SerializeField] PhotonView PV;
+        [SerializeField] AudioSource audioSource;
         Vector3 curPos;
         Rigidbody2D rigid;
         SpriteRenderer renderer;
@@ -29,6 +30,12 @@ namespace TopDown
         public int actor;
         public Transform attackPosition;
         public Transform defencePosition;
+
+        [Header("-----Audio Clip-----")]
+        public AudioClip attck_0_clip;
+        public AudioClip attck_1_clip;
+        public AudioClip defence_clip;
+
 
         [Header("-----Player State-----")]
         #region Player Properties
@@ -47,6 +54,12 @@ namespace TopDown
         public float Speed { get => speed; set => ActionRPC(nameof(SetSpeedRPC), value); }
         [PunRPC] void SetSpeedRPC(float value) => speed = value;
 
+        /*/총알스피드
+        [SerializeField] float bulletSpeed; //default = 8
+        public float BulletSpeed { get => bulletSpeed; set => ActionRPC(nameof(BulletSpeed), value); }
+        [PunRPC] void SetBulletSpeedRPC(float value) => bulletSpeed = value;
+        */
+
         //데미지
         [SerializeField] float damage; //default = 2
         public float Damage { get => damage; set => ActionRPC(nameof(SetDamageRPC), value); }
@@ -58,9 +71,11 @@ namespace TopDown
         [PunRPC] void SetDirectionRPC(int value) => direction = value;
 
         //공격 딜레이
-        [SerializeField] float attackDelay; //default = 0.5
+        [SerializeField] float attackDelay0; //default = 0.5
+        [SerializeField] float attackDelay1; //default = 5
         [SerializeField] float defenceDelay; //default = 2
-        [SerializeField] bool attackable = true;
+        [SerializeField] bool attackable0 = true;
+        [SerializeField] bool attackable1 = true;
         [SerializeField] bool defensible = true;
 
         //Die
@@ -68,10 +83,7 @@ namespace TopDown
         public bool IsDie { get => isDie; set => ActionRPC(nameof(SetIsDieRPC), value); }
         [PunRPC] void SetIsDieRPC(bool value) => isDie = value;
 
-        void ActionRPC(string functionName, object value)
-        {
-            photonView.RPC(functionName, RpcTarget.All, value);
-        }
+        void ActionRPC(string functionName, object value) => photonView.RPC(functionName, RpcTarget.All, value);
 
         public void InvokeProperties()
         {
@@ -96,6 +108,7 @@ namespace TopDown
             rigid = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
             renderer = GetComponent<SpriteRenderer>();
+            audioSource = GetComponent<AudioSource>();
 
             singleton.SetTag("loadPlayer", true);
 
@@ -201,9 +214,9 @@ namespace TopDown
 
         void Shot()
         {
-            if (attackable && Input.GetKeyDown(KeyCode.Mouse0)) {
-                attackable = false;
-                StartCoroutine(AttackDelayCoroutine(attackDelay));
+            if (attackable0 && Input.GetKeyDown(KeyCode.Mouse0)) {
+                attackable0 = false;
+                StartCoroutine(AttackDelayCoroutine0(attackDelay0));
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - attackPosition.transform.position;
                 float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
                 attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
@@ -211,8 +224,26 @@ namespace TopDown
                 GameObject go = PhotonNetwork.Instantiate("Bullet", attackPosition.transform.position, attackPosition.rotation);
                 go.GetComponent<SpriteRenderer>().sortingLayerID = renderer.sortingLayerID;
                 go.GetComponent<BulletScript>().SetDamage(Damage);
+                PV.RPC("Shot0RPC", RpcTarget.AllBuffered);
+            }
+
+            if (attackable1 && Input.GetKeyDown(KeyCode.Mouse1)) {
+                attackable1 = false;
+                StartCoroutine(AttackDelayCoroutine1(attackDelay1));
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - attackPosition.transform.position;
+                float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+                attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
+
+                GameObject go = PhotonNetwork.Instantiate("Bullet1", attackPosition.transform.position, attackPosition.rotation);
+                go.GetComponent<SpriteRenderer>().sortingLayerID = renderer.sortingLayerID;
+                go.GetComponent<BulletScript>().SetDamage(Damage * 3);
+                PV.RPC("Shot1RPC", RpcTarget.AllBuffered);
             }
         }
+
+        [PunRPC] void Shot0RPC() => SoundManager.instance.PlayerSFXPlay(audioSource, "Attack_0", attackPosition, attck_0_clip);
+
+        [PunRPC] void Shot1RPC() => SoundManager.instance.PlayerSFXPlay(audioSource, "Attack_1", attackPosition, attck_1_clip);
 
         void Defence()
         {
@@ -224,22 +255,30 @@ namespace TopDown
             }
         }
 
-        IEnumerator AttackDelayCoroutine(float attackDelay)
+        [PunRPC] void DefenceRPC()
+        {
+            defencePosition.GetChild(Direction).gameObject.SetActive(true);
+            defencePosition.GetChild(Direction).gameObject.GetComponent<DefenceScript>().DefenceActiveFalse();
+
+            SoundManager.instance.PlayerSFXPlay(audioSource, "Defence", attackPosition, defence_clip);
+        }
+
+        IEnumerator AttackDelayCoroutine0(float attackDelay)
         {
             yield return new WaitForSeconds(attackDelay);
-            attackable = true;
+            attackable0 = true;
+        }
+
+        IEnumerator AttackDelayCoroutine1(float attackDelay)
+        {
+            yield return new WaitForSeconds(attackDelay);
+            attackable1 = true;
         }
 
         IEnumerator DefenceDelayCoroutine(float defenceDelay)
         {
             yield return new WaitForSeconds(defenceDelay);
             defensible = true;
-        }
-
-        [PunRPC] void DefenceRPC()
-        {
-            defencePosition.GetChild(Direction).gameObject.SetActive(true);
-            defencePosition.GetChild(Direction).gameObject.GetComponent<DefenceScript>().DefenceActiveFalse();
         }
 
         public void Hit(float damage) => Health -= damage;

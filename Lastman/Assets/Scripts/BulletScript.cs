@@ -9,8 +9,7 @@ public class BulletScript : MonoBehaviourPunCallbacks
 {
     public PhotonView PV;
     public SpriteRenderer SR;
-    [SerializeField] float speed;
-
+    public float speed;
     public float damage;
 
     public void SetDamage(float damage) => PV.RPC("SetDamageRPC", RpcTarget.AllBuffered, damage);
@@ -33,8 +32,12 @@ public class BulletScript : MonoBehaviourPunCallbacks
             }
         }
         else if (col.tag == "ItemProps") {
-            col.gameObject.GetComponent<ItemPropObject>().Hit(damage);
-            PV.RPC("DestroyRPC", RpcTarget.AllBuffered);
+            if (col.TryGetComponent(out SpriteRenderer colRenderer)) {
+                if (colRenderer.sortingLayerID == SR.sortingLayerID) {
+                    col.gameObject.GetComponent<ItemPropObject>().Hit(damage);
+                    PV.RPC("DestroyRPC", RpcTarget.AllBuffered);
+                }
+            }
         }
         else if (col.tag == "Defence") {
             damage = 0; //방어 후 플레이어 히트 판정 수정용
@@ -44,5 +47,9 @@ public class BulletScript : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void DestroyRPC() => Destroy(gameObject);
+    void DestroyRPC()
+    {
+        gameObject.SetActive(false);
+        Destroy(gameObject, 0.2f);
+    } 
 }
