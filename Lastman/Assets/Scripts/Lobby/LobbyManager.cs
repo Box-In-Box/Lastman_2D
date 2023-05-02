@@ -18,12 +18,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     [Header("-----LobbyPanel-----")]
     public GameObject lobbyPanel;
-    public Text wellcomText;
+    public Text nickNameText;
     public Text lobbyInfoText;
     public Button[] roomBtn;
     public Button previousBtn;
     public Button nextBtn;
     public InputField RoomNameInput;
+    public GameObject LobbyPlayer;
+    public GameObject LobbyBlock;
 
     [Header("-----RoomPanel-----")]
     public GameObject roomPanel;
@@ -60,7 +62,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     void Update()
     {
         if (!inGame) {
-            lobbyInfoText.text = (PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms) + "로비 / " + PhotonNetwork.CountOfPlayers + "접속";
+            lobbyInfoText.text = "로비 " + "<color=yellow>" + (PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms) + "</color>" + "  /  " 
+                +  " 게임접속중 " + "<color=red>" + PhotonNetwork.CountOfPlayers + "</color>";
 
             if(roomPanel.activeSelf == true) {
                     if (chatInput.text != "" && Input.GetKeyDown(KeyCode.Return)) {
@@ -84,21 +87,31 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         SetPanel(LOBBY);
+
+        LobbyPlayer.SetActive(true);
+        LobbyBlock.SetActive(true);
         
         nickNameInput.text = "";
-        wellcomText.text = "내 닉네임 : " + PhotonNetwork.LocalPlayer.NickName;
+        nickNameText.text = "[ " + "<color=white>" + PhotonNetwork.LocalPlayer.NickName + "</color>" + " ]";
         myRoomList.Clear();
     }
 
     public void Disconnect()
     {
         SetPanel(LOGIN);
+
+        LobbyPlayer.SetActive(false);
+        LobbyBlock.SetActive(false);
+
         PhotonNetwork.Disconnect();
     } 
 
     public override void OnDisconnected(DisconnectCause cause)
     {
         SetPanel(LOGIN);
+
+        LobbyPlayer.SetActive(false);
+        LobbyBlock.SetActive(false);
     }
     #endregion
 
@@ -169,7 +182,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void JoinRoom() => PhotonNetwork.JoinRoom(EventSystem.current.currentSelectedGameObject.transform.GetChild(0).GetComponent<Text>().text);
 
     public override void OnJoinedRoom()
-    { 
+    {   
+        LobbyPlayer.SetActive(false);
+        LobbyBlock.SetActive(false);
+
         singleton.SetPlayerSlot();
         PV.RPC("PrintPlayerSlot", RpcTarget.All);
         EnterRoom();
@@ -307,6 +323,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 lobbyPanel.SetActive(false);
                 roomPanel.SetActive(true);
                 break;
+        }
+    }
+
+    public void SettingPanel(bool isActive)
+    {
+        //LobbyPlayer 설정
+        if (lobbyPanel.activeSelf) {
+            LobbyPlayer.SetActive(isActive);
+        }
+        //Player 설정
+        if (roomPanel.activeSelf) {
+            for (int i = 0; i < players.Count; i++) {
+                players[i].gameObject.SetActive(isActive);
+            }
         }
     }
     #endregion
