@@ -22,6 +22,5 @@ namespace TopDown
                 sr.sortingLayerName = sortingLayer;
             }
         }
-
     }
 }

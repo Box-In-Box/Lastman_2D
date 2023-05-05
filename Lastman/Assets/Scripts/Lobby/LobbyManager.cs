@@ -65,11 +65,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             lobbyInfoText.text = "로비 " + "<color=yellow>" + (PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms) + "</color>" + "  /  " 
                 +  " 게임접속중 " + "<color=red>" + PhotonNetwork.CountOfPlayers + "</color>";
 
+            //2인이상 게임 시작
+            if (players.Count < 2 || !singleton.Master()) gameStartBtn.interactable = false;
+            else gameStartBtn.interactable = true;
+
             if(roomPanel.activeSelf == true) {
-                    if (chatInput.text != "" && Input.GetKeyDown(KeyCode.Return)) {
-                        MsgSend();
-                        chatInput.ActivateInputField();
-                        chatInput.Select();
+                if (chatInput.text != "" && Input.GetKeyDown(KeyCode.Return)) {
+                    MsgSend();
+                    chatInput.ActivateInputField();
+                    chatInput.Select();
                 }
             }
         }
@@ -99,19 +103,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void Disconnect()
     {
         SetPanel(LOGIN);
-
-        LobbyPlayer.SetActive(false);
-        LobbyBlock.SetActive(false);
-
         PhotonNetwork.Disconnect();
     } 
 
     public override void OnDisconnected(DisconnectCause cause)
     {
         SetPanel(LOGIN);
-
-        LobbyPlayer.SetActive(false);
-        LobbyBlock.SetActive(false);
+        Invoke("LobbyPlayerRemoveInvoke", 0.2f);
     }
     #endregion
 
@@ -225,7 +223,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         for (int i = 0; i < playerSlot.Length; i++)
-            if (playerSlot[i].transform.GetChild(0).GetComponent<Text>().text == otherPlayer.NickName)
+            if (playerSlot[i].transform.GetChild(0).GetComponent<Text>().text == otherPlayer.NickName
+                || (playerSlot[i].transform.GetChild(0).GetComponent<Text>().text == "<방장> " + otherPlayer.NickName))
                 playerSlot[i].transform.GetChild(0).GetComponent<Text>().text = "";
 
         if (singleton.Master()) {
@@ -233,6 +232,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             PV.RPC("PrintPlayerSlot", RpcTarget.All);
             PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + otherPlayer.NickName + "님이 퇴장하셨습니다</color>");
         }
+
+        RoomRenewal();
     }
 
     void EnterRoom()
@@ -251,28 +252,28 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         for(int i = 0; i < players.Count; i++) {
             if (CP["Slot_0"].Equals(players[i].nick)) {
-                playerSlot[0].transform.GetChild(0).GetComponent<Text>().text = players[i].nick;
+                playerSlot[0].transform.GetChild(0).GetComponent<Text>().text = PhotonNetwork.CurrentRoom.masterClientId == players[i].actor ? "<방장> " + players[i].nick : players[i].nick;
                 playerPosition = playerInstantiatePosition[0].position;
                 playerPosition.z = 0;
                 players[i].gameObject.transform.position = playerPosition;
                 continue;
             }
             else if (CP["Slot_1"].Equals(players[i].nick)) {
-                playerSlot[1].transform.GetChild(0).GetComponent<Text>().text = players[i].nick;
+                playerSlot[1].transform.GetChild(0).GetComponent<Text>().text = PhotonNetwork.CurrentRoom.masterClientId == players[i].actor ? "<방장> " + players[i].nick : players[i].nick;
                 playerPosition = playerInstantiatePosition[1].position;
                 playerPosition.z = 0;
                 players[i].gameObject.transform.position = playerPosition;
                 continue;
             }
             else if (CP["Slot_2"].Equals(players[i].nick)) {
-                playerSlot[2].transform.GetChild(0).GetComponent<Text>().text = players[i].nick;
+                playerSlot[2].transform.GetChild(0).GetComponent<Text>().text = PhotonNetwork.CurrentRoom.masterClientId == players[i].actor ? "<방장> " + players[i].nick : players[i].nick;
                 playerPosition = playerInstantiatePosition[2].position;
                 playerPosition.z = 0;
                 players[i].gameObject.transform.position = playerPosition;
                 continue;
             }
             else if (CP["Slot_3"].Equals(players[i].nick)) {
-                playerSlot[3].transform.GetChild(0).GetComponent<Text>().text = players[i].nick;
+                playerSlot[3].transform.GetChild(0).GetComponent<Text>().text = PhotonNetwork.CurrentRoom.masterClientId == players[i].actor ? "<방장> " + players[i].nick : players[i].nick;
                 playerPosition = playerInstantiatePosition[3].position;
                 playerPosition.z = 0;
                 players[i].gameObject.transform.position = playerPosition;
@@ -339,5 +340,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
         }
     }
+
+    public void LobbyPlayerRemoveInvoke() => LobbyPlayer.SetActive(false);
     #endregion
 }

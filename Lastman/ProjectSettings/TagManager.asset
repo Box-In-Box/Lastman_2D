@@ -9,6 +9,7 @@ TagManager:
   - Bullet
   - ItemProps
   - Defence
+  - Stairs
   layers:
   - Default
   - TransparentFX

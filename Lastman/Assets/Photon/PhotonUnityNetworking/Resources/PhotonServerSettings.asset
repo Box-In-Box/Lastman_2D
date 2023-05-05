@@ -72,6 +72,11 @@ MonoBehaviour:
   - SetBulletSpeedRPC
   - Shot0RPC
   - Shot1RPC
+  - SetPlayerPositionRPC
+  - SetPropsPositionRPC
+  - SetLayer2
+  - SetLayerParent
+  - SetLayerRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

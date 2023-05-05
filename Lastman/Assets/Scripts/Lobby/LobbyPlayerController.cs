@@ -20,6 +20,7 @@ public class LobbyPlayerController : MonoBehaviour
     public Transform defencePosition;
     public GameObject bulletObject0;
     public GameObject bulletObject1;
+    public Transform bulletPosition;
 
     [Header("-----Audio Clip-----")]
     public AudioClip attck_0_clip;
@@ -72,9 +73,13 @@ public class LobbyPlayerController : MonoBehaviour
             float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
             attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
 
-            GameObject go = Instantiate(bulletObject0, attackPosition.transform.position, attackPosition.rotation);
-            SoundManager.instance.PlayerSFXPlay(audioSource, "Attack_0", attackPosition, attck_0_clip);
-            timer = 0;
+            if (gameObject.GetComponent<SpriteRenderer>().sortingLayerName == "Layer 1") {
+                GameObject go = Instantiate(bulletObject0, attackPosition.transform.position, attackPosition.rotation);
+                go.transform.SetParent(bulletPosition, true);
+                SoundManager.instance.PlayerSFXPlay(audioSource, "Attack_0", attackPosition, attck_0_clip);
+                timer = 0;
+            }
+            
         }
 
         if (attackable1 && Input.GetKeyDown(KeyCode.Mouse1)) {
@@ -83,9 +88,11 @@ public class LobbyPlayerController : MonoBehaviour
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - attackPosition.transform.position;
             float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
             attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
-
-            GameObject go = Instantiate(bulletObject1, attackPosition.transform.position, attackPosition.rotation);
-            SoundManager.instance.PlayerSFXPlay(audioSource, "Attack_1", attackPosition, attck_1_clip);
+            
+            if (gameObject.GetComponent<SpriteRenderer>().sortingLayerName == "Layer 1") {
+                GameObject go = Instantiate(bulletObject1, attackPosition.transform.position, attackPosition.rotation);
+                SoundManager.instance.PlayerSFXPlay(audioSource, "Attack_1", attackPosition, attck_1_clip);
+            }
         }
     }
 
@@ -135,4 +142,29 @@ public class LobbyPlayerController : MonoBehaviour
             timer += Time.deltaTime;
         }
     }
+
+    public void ActiveObject(bool isActive)
+    {
+        //플레이어 설정
+        if (isActive == true) gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "Layer 1";
+        else gameObject.GetComponent<SpriteRenderer>().sortingLayerName = "Default";
+
+        //총알 설정
+        if (bulletPosition.childCount == 0)
+            return;
+        else {
+            for (int i = 0; i < bulletPosition.childCount; i++) {
+                Destroy(bulletPosition.transform.GetChild(i).gameObject);
+            }
+        }
+    }
+
+    public void LobbyPlayerInvoke()
+    {
+        Invoke("SetLobbyPlayer", 0.2f);
+        
+    }
+
+    void SetLobbyPlayer() => gameObject.SetActive(true);
+
 }

@@ -221,9 +221,13 @@ namespace TopDown
                 float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
                 attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
 
-                GameObject go = PhotonNetwork.Instantiate("Bullet", attackPosition.transform.position, attackPosition.rotation);
-                go.GetComponent<SpriteRenderer>().sortingLayerID = renderer.sortingLayerID;
-                go.GetComponent<BulletScript>().SetDamage(Damage);
+                if (renderer.sortingLayerName == "Layer 1")
+                    PhotonNetwork.Instantiate("Bullet_L_Layer1", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage);
+                else if (renderer.sortingLayerName == "Layer 2")
+                    PhotonNetwork.Instantiate("Bullet_L_Layer2", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage);
+                else if (renderer.sortingLayerName == "Layer 3")
+                    PhotonNetwork.Instantiate("Bullet_L_Layer3", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage);
+
                 PV.RPC("Shot0RPC", RpcTarget.AllBuffered);
             }
 
@@ -234,9 +238,12 @@ namespace TopDown
                 float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
                 attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
 
-                GameObject go = PhotonNetwork.Instantiate("Bullet1", attackPosition.transform.position, attackPosition.rotation);
-                go.GetComponent<SpriteRenderer>().sortingLayerID = renderer.sortingLayerID;
-                go.GetComponent<BulletScript>().SetDamage(Damage * 3);
+                if (renderer.sortingLayerName == "Layer 1")
+                    PhotonNetwork.Instantiate("Bullet_R_Layer1", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage * 3);
+                else if (renderer.sortingLayerName == "Layer 2")
+                    PhotonNetwork.Instantiate("Bullet_R_Layer2", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage * 3);
+                else if (renderer.sortingLayerName == "Layer 3")
+                    PhotonNetwork.Instantiate("Bullet_R_Layer3", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage * 3);
                 PV.RPC("Shot1RPC", RpcTarget.AllBuffered);
             }
         }
@@ -258,6 +265,7 @@ namespace TopDown
         [PunRPC] void DefenceRPC()
         {
             defencePosition.GetChild(Direction).gameObject.SetActive(true);
+            defencePosition.GetChild(Direction).gameObject.GetComponent<SpriteRenderer>().sortingLayerName = renderer.sortingLayerName;
             defencePosition.GetChild(Direction).gameObject.GetComponent<DefenceScript>().DefenceActiveFalse();
 
             SoundManager.instance.PlayerSFXPlay(audioSource, "Defence", attackPosition, defence_clip);
@@ -286,8 +294,8 @@ namespace TopDown
         public void OnTriggerEnter2D(Collider2D col) {
             if (Forbidden())
                 return;
-
-            OhterSendMaster(col.GetComponent<PhotonView>(), col.GetComponent<BulletScript>().damage);
+            if (col.tag == "Bullet")
+                OhterSendMaster(col.GetComponent<PhotonView>(), col.GetComponent<BulletScript>().damage);
         }
 
         public void OhterSendMaster(PhotonView colPV, float damage)
