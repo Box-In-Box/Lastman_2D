@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4099693179087141800}
   - component: {fileID: -2399204929905627561}
   - component: {fileID: 4111904306439813857}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: PF Props Barrel
   m_TagString: ItemProps
   m_Icon: {fileID: 0}
@@ -125,6 +125,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 200
   health: 200
+  isFixedItemProps: 0
+  isItemProps: 0
+  item: {fileID: 0}
 --- !u!70 &4111904306439813857
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -151,7 +154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2055102312182832481}
   - component: {fileID: 2055102312182832480}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,8 +214,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1869315837
-  m_SortingLayer: 1
+  m_SortingLayerID: -44025399
+  m_SortingLayer: 2
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300022, guid: ed7554aeefd5da44a9fe1ee9b93afe77, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -235,7 +238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2878440253740821689}
   - component: {fileID: 3137279834417030057}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

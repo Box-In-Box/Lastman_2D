@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviourPun
     [SerializeField] string[] randomPropsName = {"PF Props Crate Small", "PF Props Crate"
                         , "PF Props Pot A", "PF Props Pot B", "PF Props Pot C"};
 
+    public GameObject[] fixedItem;
+    public GameObject[] item;
+
     public Transform PlayerStartPosition;
     [SerializeField] bool[] isUsingPosition;
     bool isFinish;

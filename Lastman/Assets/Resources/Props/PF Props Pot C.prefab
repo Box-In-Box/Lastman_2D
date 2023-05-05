@@ -209,6 +209,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 60
   health: 60
+  isFixedItemProps: 0
+  isItemProps: 0
+  item: {fileID: 0}
 --- !u!70 &7874521340073797083
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

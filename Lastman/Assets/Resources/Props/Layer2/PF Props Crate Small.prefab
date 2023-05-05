@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7230887820324566444}
   - component: {fileID: 508808502736962220}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: -1565279839825463122}
   - component: {fileID: -6405221676579452710}
   - component: {fileID: 7248915902583553767}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: PF Props Crate Small
   m_TagString: ItemProps
   m_Icon: {fileID: 0}
@@ -183,6 +183,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   health: 100
+  isFixedItemProps: 0
+  isItemProps: 0
+  item: {fileID: 0}
 --- !u!61 &7248915902583553767
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -219,7 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8150476868737220288}
   - component: {fileID: 8150476868737220291}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,8 +282,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1869315837
-  m_SortingLayer: 1
+  m_SortingLayerID: -44025399
+  m_SortingLayer: 2
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300006, guid: ed7554aeefd5da44a9fe1ee9b93afe77, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

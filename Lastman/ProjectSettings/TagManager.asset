@@ -10,6 +10,7 @@ TagManager:
   - ItemProps
   - Defence
   - Stairs
+  - Item
   layers:
   - Default
   - TransparentFX

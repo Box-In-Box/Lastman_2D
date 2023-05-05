@@ -563,13 +563,18 @@ MonoBehaviour:
   attck_1_clip: {fileID: 8300000, guid: af66162561d2eed40ad49268cab318bb, type: 3}
   defence_clip: {fileID: 8300000, guid: d9419ba0bfac1e84a95418ac5851caf6, type: 3}
   maxHealth: 100
-  health: 0
+  maxSpeed: 4
+  maxDamage: 30
+  maxAttackDelay0: 0.2
+  maxAttackDelay1: 3
+  maxDefenceDelay: 2
+  health: 100
   speed: 2
   damage: 20
   direction: 0
   attackDelay0: 0.5
   attackDelay1: 5
-  defenceDelay: 2
+  defenceDelay: 3
   attackable0: 1
   attackable1: 1
   defensible: 1

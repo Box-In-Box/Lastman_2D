@@ -36,32 +36,28 @@ namespace TopDown
         public AudioClip attck_1_clip;
         public AudioClip defence_clip;
 
+        [Header("-----Player Max State-----")]
+        #region Player Properties
+        [SerializeField] float maxHealth; //최대 체력 100
+        [SerializeField] float maxSpeed; //최대 스피드 4
+        [SerializeField] float maxDamage; //최대 데미지 30
+        [SerializeField] float maxAttackDelay0; //최소0 딜레이 0.2
+        [SerializeField] float maxAttackDelay1; //최소1 딜레이 3
+        [SerializeField] float maxDefenceDelay; //최소 딜레이 3
 
         [Header("-----Player State-----")]
-        #region Player Properties
-        //최대 체력
-        [SerializeField] float maxHealth; //default == 100
-        public float MaxHealth { get => maxHealth; set => ActionRPC(nameof(SetMaxHealthRPC), value); }
-        [PunRPC] void SetMaxHealthRPC(float value) => maxHealth = value;
-
         //현제 체력
         [SerializeField] float health;
         public float Health { get => health; set => ActionRPC(nameof(SetHealthRPC), value); }
-        [PunRPC] void SetHealthRPC(float value) { health = value; healthImage.fillAmount = Health / MaxHealth; }
+        [PunRPC] void SetHealthRPC(float value) { health = value; healthImage.fillAmount = Health / maxHealth; }
 
         //스피드
         [SerializeField] float speed; //default = 2
         public float Speed { get => speed; set => ActionRPC(nameof(SetSpeedRPC), value); }
         [PunRPC] void SetSpeedRPC(float value) => speed = value;
 
-        /*/총알스피드
-        [SerializeField] float bulletSpeed; //default = 8
-        public float BulletSpeed { get => bulletSpeed; set => ActionRPC(nameof(BulletSpeed), value); }
-        [PunRPC] void SetBulletSpeedRPC(float value) => bulletSpeed = value;
-        */
-
         //데미지
-        [SerializeField] float damage; //default = 2
+        [SerializeField] float damage; //default = 20
         public float Damage { get => damage; set => ActionRPC(nameof(SetDamageRPC), value); }
         [PunRPC] void SetDamageRPC(float value) => damage = value;
 
@@ -73,7 +69,7 @@ namespace TopDown
         //공격 딜레이
         [SerializeField] float attackDelay0; //default = 0.5
         [SerializeField] float attackDelay1; //default = 5
-        [SerializeField] float defenceDelay; //default = 2
+        [SerializeField] float defenceDelay; //default = 5
         [SerializeField] bool attackable0 = true;
         [SerializeField] bool attackable1 = true;
         [SerializeField] bool defensible = true;
@@ -130,7 +126,7 @@ namespace TopDown
             LM.players.Add(this);
             LM.RoomRenewal();
 
-            Health = MaxHealth;
+            Health = maxHealth;
             IsDie = false;
             Direction = 0;
             anim.SetInteger("Direction", Direction);
@@ -222,11 +218,11 @@ namespace TopDown
                 attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
 
                 if (renderer.sortingLayerName == "Layer 1")
-                    PhotonNetwork.Instantiate("Bullet_L_Layer1", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage);
+                    PhotonNetwork.Instantiate("Bullet/Bullet_L_Layer1", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage);
                 else if (renderer.sortingLayerName == "Layer 2")
-                    PhotonNetwork.Instantiate("Bullet_L_Layer2", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage);
+                    PhotonNetwork.Instantiate("Bullet/Bullet_L_Layer2", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage);
                 else if (renderer.sortingLayerName == "Layer 3")
-                    PhotonNetwork.Instantiate("Bullet_L_Layer3", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage);
+                    PhotonNetwork.Instantiate("Bullet/Bullet_L_Layer3", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage);
 
                 PV.RPC("Shot0RPC", RpcTarget.AllBuffered);
             }
@@ -239,11 +235,11 @@ namespace TopDown
                 attackPosition.rotation = Quaternion.AngleAxis(angle , Vector3.forward);
 
                 if (renderer.sortingLayerName == "Layer 1")
-                    PhotonNetwork.Instantiate("Bullet_R_Layer1", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage * 3);
+                    PhotonNetwork.Instantiate("Bullet/Bullet_R_Layer1", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage * 3);
                 else if (renderer.sortingLayerName == "Layer 2")
-                    PhotonNetwork.Instantiate("Bullet_R_Layer2", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage * 3);
+                    PhotonNetwork.Instantiate("Bullet/Bullet_R_Layer2", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage * 3);
                 else if (renderer.sortingLayerName == "Layer 3")
-                    PhotonNetwork.Instantiate("Bullet_R_Layer3", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage * 3);
+                    PhotonNetwork.Instantiate("Bullet/Bullet_R_Layer3", attackPosition.transform.position, attackPosition.rotation).GetComponent<BulletScript>().SetDamage(Damage * 3);
                 PV.RPC("Shot1RPC", RpcTarget.AllBuffered);
             }
         }
@@ -294,8 +290,40 @@ namespace TopDown
         public void OnTriggerEnter2D(Collider2D col) {
             if (Forbidden())
                 return;
+            if (col.tag == "Item")
+                GetItem(col.GetComponent<ItemObject>());
             if (col.tag == "Bullet")
                 OhterSendMaster(col.GetComponent<PhotonView>(), col.GetComponent<BulletScript>().damage);
+        }
+
+        public void GetItem(ItemObject itemObject)
+        {
+            switch (itemObject.itemType) {
+                case itemType.AttackDelay0_Down:
+                    if (attackDelay0 >= maxAttackDelay0)
+                        attackDelay0 -= itemObject.value;
+                    break;
+                case itemType.AttackDelay1_Down:
+                    if (attackDelay1 >= maxAttackDelay1)
+                        attackDelay1 -= itemObject.value;
+                    break;
+                case itemType.Damage_Up:
+                    if (Damage <= maxDamage)
+                        Damage += itemObject.value;
+                    break;
+                case itemType.defenceDelay_Down:
+                    if (defenceDelay >= maxDefenceDelay)
+                        defenceDelay -= itemObject.value;
+                    break;
+                case itemType.Health_Up:
+                    if (Health <= maxHealth)
+                        Health += itemObject.value;
+                    break;
+                case itemType.Speed_Up:
+                    if (Speed <= maxSpeed)
+                        Speed += itemObject.value;
+                    break;
+            }
         }
 
         public void OhterSendMaster(PhotonView colPV, float damage)
@@ -328,7 +356,6 @@ namespace TopDown
                 GM.players.Remove(this);
                 GM.SortPlayers();
             }
-                
         }
 
         void IPunInstantiateMagicCallback.OnPhotonInstantiate(PhotonMessageInfo info)

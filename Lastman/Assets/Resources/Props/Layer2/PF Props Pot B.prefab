@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 295679430414895973}
   - component: {fileID: 5094303987279148837}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2577585254280797811}
   - component: {fileID: 2577585254280797808}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,8 +133,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1869315837
-  m_SortingLayer: 1
+  m_SortingLayerID: -44025399
+  m_SortingLayer: 2
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300048, guid: ed7554aeefd5da44a9fe1ee9b93afe77, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 8733641877201329816}
   - component: {fileID: -7359270639781683882}
   - component: {fileID: 6451401700645691647}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: PF Props Pot B
   m_TagString: ItemProps
   m_Icon: {fileID: 0}
@@ -272,6 +272,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 60
   health: 60
+  isFixedItemProps: 0
+  isItemProps: 0
+  item: {fileID: 0}
 --- !u!70 &6451401700645691647
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
