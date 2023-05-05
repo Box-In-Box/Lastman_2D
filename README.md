@@ -8,7 +8,7 @@
 ```
 　　●Move = W, S, A, D 
 　　●Attack = Left Mouse
-　　●Attack2 = Right Mouse (Not implemented)
+　　●Attack2 = Right Mouse
 　　●Defence = Space
 　　●Maximum 4 players
 　　●Drop upgrade items when destroying props (Not implemented)
