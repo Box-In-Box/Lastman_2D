@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using static Singleton;
 
 namespace Cainos.PixelArtTopDown_Basic
 {
@@ -18,11 +19,17 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Start()
         {   
+            SetPlayerPosition();
+        }
+
+        void SetPlayerPosition()
+        {
             GameObject[] Player = GameObject.FindGameObjectsWithTag("Player");
             
             for (int i = 0; i < Player.Length; i++) {
                 if (Player[i].GetComponent<TopDown.PlayerController>().isMinePlayer()) {
                     target = Player[i].transform;
+                    transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
                     break;
                 } 
             }

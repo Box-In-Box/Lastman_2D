@@ -67,12 +67,12 @@ namespace TopDown
         [PunRPC] void SetDirectionRPC(int value) => direction = value;
 
         //공격 딜레이
-        [SerializeField] float attackDelay0; //default = 0.5
-        [SerializeField] float attackDelay1; //default = 5
-        [SerializeField] float defenceDelay; //default = 5
-        [SerializeField] bool attackable0 = true;
-        [SerializeField] bool attackable1 = true;
-        [SerializeField] bool defensible = true;
+        [SerializeField] public float attackDelay0; //default = 0.5
+        [SerializeField] public float attackDelay1; //default = 5
+        [SerializeField] public float defenceDelay; //default = 5
+        [SerializeField] public bool attackable0 = true;
+        [SerializeField] public bool attackable1 = true;
+        [SerializeField] public bool defensible = true;
 
         //Die
         [SerializeField] bool isDie;
@@ -334,10 +334,15 @@ namespace TopDown
                 if (Health <= 0) {
                     IsDie = true;
                     MM.PV.RPC("MasterReceiveRPC", RpcTarget.MasterClient, DIE, singleton.ActorNum(), colPV.Owner.ActorNumber);
-                    GameObject.Find("Canvas").transform.Find("RespawnPanel").gameObject.SetActive(true);
+                    if (GM != null) {
+                        GM.DieUi();
+                        SetDiePlayerUI(nick);
+                    } 
                 }  
             }
         }
+
+        void SetDiePlayerUI(string playerName) => GM.SetDiePlayer(playerName);
 
         void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -80,6 +80,18 @@ public class MultiManager : MonoBehaviourPunCallbacks
         singleton.isStart = true;
     }
 
+    public int AlivePlayerNum()
+    {
+        int alivePlayerNum = 0;
+
+        for (int i = 0; i < playerInfos.Count; i++) {
+            if (playerInfos[i].isDie == false)
+                alivePlayerNum++;
+        }
+
+        return alivePlayerNum;
+    }
+
     public IEnumerator FinishGame() //게임 끝
     {
         if (singleton.Master()) {
@@ -113,4 +125,5 @@ public class MultiManager : MonoBehaviourPunCallbacks
         playerInfos.Remove(playerInfo);
         MasterSendPlayerInfo(REMOVE);
     }
+    
 }

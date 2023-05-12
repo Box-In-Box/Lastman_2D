@@ -5,28 +5,22 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using static Singleton;
+using ExitGames.Client.Photon;
 
-public class GameManager : MonoBehaviourPun
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public PhotonView PV;
     public Button GameEndBtn;
-    MultiManager multiManager;
+    [SerializeField] MultiManager MM;
     public List<TopDown.PlayerController> players = new List<TopDown.PlayerController>();
 
-    
+    //아이템 오브젝트 생성될 위치
     public Transform fixed_Props_Position_Layer1;
     public Transform random_Props_Position_Layer1;
     public Transform fixed_Props_Position_Layer2;
     public Transform random_Props_Position_Layer2;
     [Space (10f)]
 
-    public Transform fixed_Props_Layer1;
-    public Transform random_Props_Layer1;
-    public Transform fixed_Props_Layer2;
-    public Transform random_Props_Layer2;
-
-
-    [Space (10f)]
     [SerializeField] string[] fixedPropsName = {"PF Props Chest"};
     [SerializeField] string[] randomPropsName = {"PF Props Crate Small", "PF Props Crate"
                         , "PF Props Pot A", "PF Props Pot B", "PF Props Pot C"};
@@ -36,22 +30,82 @@ public class GameManager : MonoBehaviourPun
 
     public Transform PlayerStartPosition;
     [SerializeField] bool[] isUsingPosition;
-    bool isFinish;
+    bool isFinish = false;
+
+    [Header("-----UI-----")]
+    public GameObject DiePanel;
+    public Transform PlayerNameListPanel;
+    public Text timerText;
+    public float timer;
+    public float time_current;
 
     void Start()
     {
-        multiManager = FindObjectOfType<MultiManager>();
-        GameEndBtn.onClick.AddListener(()=> StartCoroutine(multiManager.FinishGame()));
+        MM = FindObjectOfType<MultiManager>();
+        GameEndBtn.onClick.AddListener(()=> StartCoroutine(MM.FinishGame()));
+
+        Invoke("SetUi_PlayersName", 1f);
 
         isUsingPosition = new bool[PlayerStartPosition.childCount];
-
         if (singleton.Master()) {
             //플레이어 스타트 포인터 설정 게임 들어오고 플레이어 리스트 추가 기다려야함
             Invoke("SetStartPlayerPosotionInvoke", 1f);
             Invoke("SetStartPropsPosotionInvoke", 1f);
         }
-        
-        //if (singleton.Master()) PV.RPC("SetPropsPositionRPC", RpcTarget.AllBufferedViaServer);
+
+        //타이머 설정
+        StartCoroutine(TimerCoroution(timer));
+    }
+
+    IEnumerator TimerCoroution(float time)
+    {    
+        time_current = time;
+        timerText.text = "Timer : " + ((int)(time_current / 60 % 60)).ToString("D2") + " : " + ((int)(time_current % 60)).ToString("D2");
+        yield return new WaitUntil(() => singleton.isStart);
+
+        while(time_current > 0)
+        {
+            time_current -= Time.deltaTime;
+            timerText.text = "Timer : " + ((int)(time_current / 60 % 60)).ToString("D2") + " : " + ((int)(time_current % 60)).ToString("D2");
+            yield return null;
+        }
+        timerText.text = "Timer : 00 : 00";
+    }
+
+    //처음 게임 시작 시 있는 모든 사람 (강제종료 전 모든 사람 포함)
+    void SetUi_PlayersName()
+    {
+        for (int i = 0; i < MM.playerInfos.Count; i++) {
+            PlayerNameListPanel.GetChild(i).GetComponent<Text>().text = MM.playerInfos[i].nickName;
+        }
+    }
+
+    //강제 종료 시 UI이름 색상 변경
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        for (int i = 0; i < PlayerNameListPanel.childCount; i++) {
+            if (PlayerNameListPanel.GetChild(i).GetComponent<Text>().text == otherPlayer.NickName)
+                PlayerNameListPanel.GetChild(i).GetComponent<Text>().color = Color.red;
+        }
+    }
+
+    public void DieUi()
+    {
+        DiePanel.SetActive(true);
+    }
+
+    public void SetDiePlayer(string playerName) => PV.RPC("SetDiePlayerRPC", RpcTarget.AllBuffered, playerName);
+
+    [PunRPC] public void SetDiePlayerRPC(string playerName)
+    {
+        for (int i = 0; i < PlayerNameListPanel.childCount; i++) {
+            Text PlayerNametext = PlayerNameListPanel.GetChild(i).GetComponent<Text>();
+            if (PlayerNametext.text == playerName) {
+                PlayerNametext.color = new Color(PlayerNametext.color.r, 
+                PlayerNametext.color.g, PlayerNametext.color.b, 0.5f);
+            }
+                
+        }
     }
 
     void Update()
@@ -59,31 +113,25 @@ public class GameManager : MonoBehaviourPun
         if (!singleton.isStart)
             return;
 
-        if (CheckGameState() && !isFinish) {
-            StartCoroutine(multiManager.FinishGame());
+        //게임 종료 설정 - 한 명 살아 남거나 시간 종료
+        if (CheckGameState() && isFinish == false) {
+            StartCoroutine(MM.FinishGame());
             isFinish = true;
         }
     }
 
     bool CheckGameState()
     {
-        if ( multiManager.playerInfos.Count <= 1)
+        if (MM.AlivePlayerNum() <= 1 || time_current <= 0)
+            return true;
+        else 
             return false;
-            
-        int alivePlayerNum = 0;
-
-        for (int i = 0; i < multiManager.playerInfos.Count; i++) {
-            if (multiManager.playerInfos[i].isDie == false) alivePlayerNum++;
-        }
-
-        if (alivePlayerNum <= 1) return true;
-        else return false;
     }
 
     void SetStartPlayerPosotionInvoke()
     {
         int[] randomStartPosition = new int[players.Count];
-        randomStartPosition = RandomPosition(0, PlayerStartPosition.childCount, multiManager.playerInfos.Count);
+        randomStartPosition = RandomPosition(0, PlayerStartPosition.childCount, MM.playerInfos.Count);
         PV.RPC("SetPlayerPositionRPC", RpcTarget.AllBufferedViaServer, randomStartPosition);
     }
 
@@ -166,22 +214,22 @@ public class GameManager : MonoBehaviourPun
         yield return null;
         //1층 고정 오브젝트 배치
         for (int i = 0; i < fixedLayer1Position.Length; i++) {
-            GameObject go = PhotonNetwork.Instantiate("Props/" + fixedPropsName[fixedLayer1Prop[i]], fixed_Props_Position_Layer1.GetChild(fixedLayer1Position[i]).position, Singleton.QI);
+            PhotonNetwork.InstantiateSceneObject("Props/" + fixedPropsName[fixedLayer1Prop[i]], fixed_Props_Position_Layer1.GetChild(fixedLayer1Position[i]).position, Singleton.QI);
         }
 
         //2층 고정 오브젝트 배치
         for (int i = 0; i < fixedLayer2Position.Length; i++) {
-            GameObject go = PhotonNetwork.Instantiate("Props/Layer2/" + fixedPropsName[fixedLayer2Prop[i]], fixed_Props_Position_Layer2.GetChild(fixedLayer2Position[i]).position, Singleton.QI);
+            PhotonNetwork.InstantiateSceneObject("Props/Layer2/" + fixedPropsName[fixedLayer2Prop[i]], fixed_Props_Position_Layer2.GetChild(fixedLayer2Position[i]).position, Singleton.QI);
         }   
 
         //1층 랜덤 오브젝트 배치
         for (int i = 0; i < randomLayer1Position.Length; i++) {
-            GameObject go = PhotonNetwork.Instantiate("Props/" + randomPropsName[randomLayer1Prop[i]], random_Props_Position_Layer1.GetChild(randomLayer1Position[i]).position, Singleton.QI);
+            PhotonNetwork.InstantiateSceneObject("Props/" + randomPropsName[randomLayer1Prop[i]], random_Props_Position_Layer1.GetChild(randomLayer1Position[i]).position, Singleton.QI);
         }
 
         //2층 랜덤 오브젝트 배치
         for (int i = 0; i < randomLayer2Position.Length; i++) {
-            GameObject go = PhotonNetwork.Instantiate("Props/Layer2/" + randomPropsName[randomLayer2Prop[i]], random_Props_Position_Layer2.GetChild(randomLayer2Position[i]).position, Singleton.QI);
+            PhotonNetwork.InstantiateSceneObject("Props/Layer2/" + randomPropsName[randomLayer2Prop[i]], random_Props_Position_Layer2.GetChild(randomLayer2Position[i]).position, Singleton.QI);
         }
     }
     #endregion

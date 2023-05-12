@@ -165,6 +165,6 @@ public class LobbyPlayerController : MonoBehaviour
         
     }
 
-    void SetLobbyPlayer() => gameObject.SetActive(true);
+    void SetLobbyPlayer() => ActiveObject(true);
 
 }
