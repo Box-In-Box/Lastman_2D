@@ -188,6 +188,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PV.RPC("PrintPlayerSlot", RpcTarget.All);
         EnterRoom();
         PhotonNetwork.Instantiate("PFPlayer", new Vector2(0, 0), QI).GetComponent<TopDown.PlayerController>();
+
+        //처음 들어 갔을 때 방장일 때
+        if (singleton.Master())
+             PV.RPC("ChatRPC", RpcTarget.MasterClient, "<color=yellow>2인 이상 시작가능합니다.</color>");
     }
 
     public void LeaveRoom()
@@ -214,7 +218,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         RoomRenewal();
 
         if (singleton.Master())
-            PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + newPlayer.NickName + "님이 참가하셨습니다</color>");
+            PV.RPC("ChatRPC", RpcTarget.All, "<color=yellow>" + newPlayer.NickName + "님이 참가하셨습니다</color>");        
 
         if (newPlayer != PhotonNetwork.LocalPlayer)
             ((GameObject)PhotonNetwork.LocalPlayer.TagObject).GetComponent<TopDown.PlayerController>().InvokeProperties();

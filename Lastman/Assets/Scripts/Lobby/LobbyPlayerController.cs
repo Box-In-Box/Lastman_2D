@@ -9,12 +9,15 @@ public class LobbyPlayerController : MonoBehaviour
     int direction;
     public float timer; //패널 이동 간 딜레이 코루틴 스탑으로 설명 버그 수정
 
-    [SerializeField] float attackDelay0; //default = 0.5
-    [SerializeField] float attackDelay1; //default = 5
-    [SerializeField] float defenceDelay; //default = 2
-    [SerializeField] bool attackable0 = true;
-    [SerializeField] bool attackable1 = true;
-    [SerializeField] bool defensible = true;
+    public float attackDelay0; //default = 0.5
+    public float attackDelay1; //default = 5
+    public float defenceDelay; //default = 2
+    public bool attackable0 = true;
+    public bool attackable1 = true;
+    public bool defensible = true;
+
+    public float Damage = 20;
+    public float Speed = 2;
 
     public Transform attackPosition;
     public Transform defencePosition;
