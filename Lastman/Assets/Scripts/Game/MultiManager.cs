@@ -96,7 +96,7 @@ public class MultiManager : MonoBehaviourPunCallbacks
     {
         if (singleton.Master()) {
             PV.RPC("FinishSyncRPC", RpcTarget.AllViaServer);
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(5f);
             singleton.GameEnd();
         }
 

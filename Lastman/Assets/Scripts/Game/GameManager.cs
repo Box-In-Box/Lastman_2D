@@ -10,7 +10,7 @@ using ExitGames.Client.Photon;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     public PhotonView PV;
-    public Button GameEndBtn;
+    //public Button GameEndBtn;
     [SerializeField] MultiManager MM;
     public List<TopDown.PlayerController> players = new List<TopDown.PlayerController>();
 
@@ -38,11 +38,15 @@ public class GameManager : MonoBehaviourPunCallbacks
     public Text timerText;
     public float timer;
     public float time_current;
+    public bool imDie = false;
+    public GameObject interactionPanel;
+    public Cainos.PixelArtTopDown_Basic.CameraPlayerFollow CameraFollw;
+    public int playerViewkey = -1;
 
     void Start()
     {
         MM = FindObjectOfType<MultiManager>();
-        GameEndBtn.onClick.AddListener(()=> StartCoroutine(MM.FinishGame()));
+        //GameEndBtn.onClick.AddListener(()=> StartCoroutine(MM.FinishGame()));
 
         Invoke("SetUi_PlayersName", 1f);
 
@@ -91,7 +95,24 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void DieUi()
     {
+        imDie = true;
         DiePanel.SetActive(true);
+        DiePanel.transform.GetChild(0).GetComponent<Text>().text = "Lose...";
+        DiePanel.transform.GetChild(1).GetComponent<Text>().text = "스페이스바로 카메라 전환";
+
+        interactionPanel.SetActive(false);
+    }
+
+    public void WinUi()
+    {
+        DiePanel.SetActive(true);
+        DiePanel.transform.GetChild(0).GetComponent<Text>().text = "Win";
+    }
+
+    public void TimeUpUi()
+    {
+        DiePanel.SetActive(true);
+        DiePanel.transform.GetChild(0).GetComponent<Text>().text = "Drow";
     }
 
     public void SetDiePlayer(string playerName) => PV.RPC("SetDiePlayerRPC", RpcTarget.AllBuffered, playerName);
@@ -115,17 +136,36 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         //게임 종료 설정 - 한 명 살아 남거나 시간 종료
         if (CheckGameState() && isFinish == false) {
+            if (time_current <= 0 && !imDie) TimeUpUi();
             StartCoroutine(MM.FinishGame());
             isFinish = true;
+            DiePanel.SetActive(true);
+        }
+        
+        //죽으면 다른 플레이어 시점 변환 가능
+        if (imDie && Input.GetKeyDown(KeyCode.Space)) {
+            DiePanel.SetActive(false);
+            if (playerViewkey == -1 ) {
+                for (int i = 0; i < players.Count; i++) {
+                    if (players[i].isMinePlayer()) {
+                        playerViewkey = i+1;
+                        break;
+                    }
+                }
+            }
+            while(true) {
+                if (playerViewkey+1 == players.Count) playerViewkey = -1;
+                if (players[++playerViewkey].IsDie == false)
+                    break;
+            }
+            CameraFollw.ChagePlayerView(playerViewkey);
         }
     }
 
     bool CheckGameState()
     {
-        if (MM.AlivePlayerNum() <= 1 || time_current <= 0)
-            return true;
-        else 
-            return false;
+        if (MM.AlivePlayerNum() <= 1 || time_current <= 0) return true;
+        else return false;
     }
 
     void SetStartPlayerPosotionInvoke()
