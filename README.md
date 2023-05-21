@@ -16,7 +16,9 @@
 ```
 
 \
-<img src = "https://user-images.githubusercontent.com/79827366/230383839-69bc870b-fedd-45c9-b9d1-2bf9b6776718.png" width="49%" height="49%">
-<img src = "https://user-images.githubusercontent.com/79827366/235692569-041542ff-8d87-4c42-9e0e-12c295f97934.png" width="49%" height="49%">
-<img src = "https://user-images.githubusercontent.com/79827366/235692574-697e0f29-9231-42b6-8330-ab11922528d3.png" width="49%" height="49%">
-<img src = "https://user-images.githubusercontent.com/79827366/235692589-5930064d-6bfb-4262-a6f6-0b74dd9d54df.png" width="49%" height="49%">
+<img src = "https://user-images.githubusercontent.com/79827366/230383839-69bc870b-fedd-45c9-b9d1-2bf9b6776718.png" width="32%" height="32%">
+<img src = "https://github.com/Box-In-Box/Lastman_2D/assets/79827366/99431069-5fc7-438d-becb-47bd1ef7ca5e" width="32%" height="32%">
+<img src = "https://github.com/Box-In-Box/Lastman_2D/assets/79827366/1fa14376-9fc2-4f16-9dd3-2d8ce35fd40e" width="32%" height="32%">
+<img src = "https://github.com/Box-In-Box/Lastman_2D/assets/79827366/99205228-6d2b-45f4-bc7e-d02841de29c4" width="32%" height="32%">
+<img src = "https://github.com/Box-In-Box/Lastman_2D/assets/79827366/8b95f07a-56f2-45a1-accc-8b30716a6307" width="32%" height="32%">
+<img src = "https://github.com/Box-In-Box/Lastman_2D/assets/79827366/7525bccc-93f1-4018-9b92-b3adb3406658" width="32%" height="32%">
