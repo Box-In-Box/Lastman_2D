@@ -137,9 +137,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         //게임 종료 설정 - 한 명 살아 남거나 시간 종료
         if (CheckGameState() && isFinish == false) {
             if (time_current <= 0 && !imDie) TimeUpUi();
-            StartCoroutine(MM.FinishGame());
-            isFinish = true;
             DiePanel.SetActive(true);
+            isFinish = true;
+            StartCoroutine(MM.FinishGame());
         }
         
         //죽으면 다른 플레이어 시점 변환 가능

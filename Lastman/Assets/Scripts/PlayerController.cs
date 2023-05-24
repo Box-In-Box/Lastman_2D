@@ -300,28 +300,34 @@ namespace TopDown
         {
             switch (itemObject.itemType) {
                 case itemType.AttackDelay0_Down:
-                    if (attackDelay0 >= maxAttackDelay0)
-                        attackDelay0 -= itemObject.value;
+                    attackDelay0 -= itemObject.value;
+                    if (attackDelay0 < maxAttackDelay0)
+                        attackDelay0 = maxAttackDelay0;
                     break;
                 case itemType.AttackDelay1_Down:
-                    if (attackDelay1 >= maxAttackDelay1)
-                        attackDelay1 -= itemObject.value;
+                    attackDelay1 -= itemObject.value;
+                    if (attackDelay1 < maxAttackDelay1)
+                        attackDelay1 = maxAttackDelay1;
                     break;
                 case itemType.Damage_Up:
-                    if (Damage <= maxDamage)
-                        Damage += itemObject.value;
+                    Damage += itemObject.value;
+                    if (Damage > maxDamage)
+                        Damage = maxDamage;
                     break;
                 case itemType.defenceDelay_Down:
-                    if (defenceDelay >= maxDefenceDelay)
-                        defenceDelay -= itemObject.value;
+                    defenceDelay -= itemObject.value;
+                    if (defenceDelay < maxDefenceDelay)
+                        defenceDelay = maxDefenceDelay;
                     break;
                 case itemType.Health_Up:
-                    if (Health <= maxHealth)
-                        Health += itemObject.value;
+                    Health += itemObject.value;
+                    if (Health > maxHealth)
+                        Health = maxHealth;
                     break;
                 case itemType.Speed_Up:
-                    if (Speed <= maxSpeed)
-                        Speed += itemObject.value;
+                    Speed += itemObject.value;
+                    if (Speed > maxSpeed)
+                        Speed = maxSpeed;
                     break;
             }
         }

@@ -140,6 +140,7 @@ public class Singleton : MonoBehaviourPun
 
     void OnGUI()
     {
+        /*
         GUI.skin.label.fontSize = 10;
 		GUI.skin.button.fontSize = 10;
 		GUILayout.BeginVertical("Box", GUILayout.Width(200), GUILayout.MinHeight(100));
@@ -150,5 +151,6 @@ public class Singleton : MonoBehaviourPun
 		GUILayout.Label("씬 : " + SceneManager.GetActiveScene().name);
 
         GUILayout.EndVertical();
+        */
     }
 }
