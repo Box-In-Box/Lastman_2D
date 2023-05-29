@@ -76,7 +76,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -44025399
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: ec47f75fe8aff1644ac73998f4ad31b5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -130,6 +130,8 @@ MonoBehaviour:
   attackable0: 1
   attackable1: 1
   defensible: 1
+  Damage: 20
+  Speed: 2
   attackPosition: {fileID: 8232221823457973757}
   defencePosition: {fileID: 3898192685805159195}
   bulletObject0: {fileID: 1720917078641101497, guid: 25b85a232bd05c549b533e575db6da26,
@@ -573,7 +575,7 @@ PrefabInstance:
     - target: {fileID: 5486208483810048295, guid: 2881731191da8b74e871a25ead660b9b,
         type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5486208483810048295, guid: 2881731191da8b74e871a25ead660b9b,
         type: 3}

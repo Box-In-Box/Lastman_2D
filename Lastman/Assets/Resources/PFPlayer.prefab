@@ -574,7 +574,7 @@ MonoBehaviour:
   direction: 0
   attackDelay0: 0.5
   attackDelay1: 5
-  defenceDelay: 3
+  defenceDelay: 5
   attackable0: 1
   attackable1: 1
   defensible: 1

@@ -127,6 +127,11 @@ namespace TopDown
             LM.RoomRenewal();
 
             Health = maxHealth;
+            Speed = 2;
+            Damage = 20;
+            attackDelay0 = 0.5f;
+            attackDelay1 = 5f;
+            defenceDelay = 5f;
             IsDie = false;
             Direction = 0;
             anim.SetInteger("Direction", Direction);

@@ -135,9 +135,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             return;
 
         //게임 종료 설정 - 한 명 살아 남거나 시간 종료
-        if (CheckGameState() && isFinish == false) {
-            if (time_current <= 0 && !imDie) TimeUpUi();
-            DiePanel.SetActive(true);
+        if (singleton.Master() && isFinish == false && ( CheckGameStatePlayer() || CheckGameStateTime())) {
+            PV.RPC("FinishRPC", RpcTarget.AllBufferedViaServer, CheckGameStateTime());
+            //DiePanel.SetActive(true);
             isFinish = true;
             StartCoroutine(MM.FinishGame());
         }
@@ -149,22 +149,37 @@ public class GameManager : MonoBehaviourPunCallbacks
                 for (int i = 0; i < players.Count; i++) {
                     if (players[i].isMinePlayer()) {
                         playerViewkey = i+1;
+                        print("playerViewkey: " + playerViewkey);
                         break;
                     }
                 }
             }
             while(true) {
-                if (playerViewkey+1 == players.Count) playerViewkey = -1;
+                if (playerViewkey+1 >= players.Count) playerViewkey = -1;
+                print("Move: " + playerViewkey);
                 if (players[++playerViewkey].IsDie == false)
                     break;
             }
             CameraFollw.ChagePlayerView(playerViewkey);
         }
     }
-
-    bool CheckGameState()
+    [PunRPC]
+    public void FinishRPC(bool isTimeUp)
     {
-        if (MM.AlivePlayerNum() <= 1 || time_current <= 0) return true;
+        if (imDie) DieUi();
+        else if (!imDie && !isTimeUp) WinUi();
+        else TimeUpUi();
+    }
+
+    bool CheckGameStatePlayer()
+    {
+        if (MM.AlivePlayerNum() <= 1) return true;
+        else return false;
+    }
+
+    bool CheckGameStateTime()
+    {
+        if (time_current <= 0) return true;
         else return false;
     }
 
