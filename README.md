@@ -11,7 +11,7 @@
 　　●Attack2 = Right Mouse
 　　●Defence = Space
 　　●Maximum 4 players
-　　●Drop upgrade items when destroying props (Not implemented)
+　　●Drop upgrade items when destroying props
 　　●Game over when the last one person survives
 ```
 
