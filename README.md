@@ -33,4 +33,3 @@
 <img src = "https://github.com/Box-In-Box/Lastman_2D/assets/79827366/bbe8d98f-651c-40fb-bbb2-734ff77721d0" width="32%" height="32%">
 
 https://github.com/Box-In-Box/Lastman_2D/assets/79827366/e543a474-cd47-4a95-9cc0-e1dcb4aff2e4
-
